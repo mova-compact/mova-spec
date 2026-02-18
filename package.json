@@ -1,16 +1,13 @@
 {
   "name": "@leryk1981/mova-spec",
   "version": "5.0.0",
-  "private": false,
+  "private": true,
   "description": "MOVA (Machine-Operable Verbal Actions) 5.0.0 core specifications, schemas and examples.",
   "license": "Apache-2.0",
   "author": "Sergii Miasoiedov",
   "type": "commonjs",
   "bin": {
     "mova-validate": "bin/mova-validate.mjs"
-  },
-  "publishConfig": {
-    "access": "public"
   },
   "files": [
     "schemas/**",

@@ -7,11 +7,11 @@
 - This repository stores the canonical MOVA 5.0.0 specification: JSON Schemas, normative documents and examples.
 - The source of truth for red-core entities (`ds.*`, `env.*`, `global.*`) lives in `schemas/` and `docs/`.
 - There is no executable code: this is a contract catalog, not a platform or agents.
-- The npm package is a distribution of the schemas and examples only; it is not an SDK or runtime.
+- This repository is maintained as source-of-truth docs/schemas (no public npm distribution workflow).
 - The current version is 5.0.0; the 4.0.0 archive is preserved in `docs/archive/4.0.0/` for historical reference.
 - Example input and output documents are in `examples/` to illustrate data shapes.
 - Schema validity is checked locally via `npm test` (Ajv 2020-12); there are no additional automated checks.
-- CI publish workflow is configured in `.github/workflows/publish.yml`; local `npm test` remains mandatory before commits.
+- Local `npm test` is mandatory before commits.
 - Document file names with `mova_4.1.1_*` are kept for path stability; canonical product version is now 5.0.0.
 - This README provides navigation; normative texts are located in `docs/`.
 - Release notes for this major update: `docs/MOVA_5.0.0_RELEASE_NOTES.md`.
@@ -25,29 +25,19 @@
 4. Run `npm test` to confirm the schemas validate in your environment.
 5. For history, compare with the archive at `docs/archive/4.0.0/` (do not modify its contents).
 
-## Install
-
-Install the published spec package (schemas, docs, examples, and a lightweight validator):
-
-```bash
-npm i @leryk1981/mova-spec
-```
-
-The package contains no runtime SDKs; it is a spec and tooling bundle only.
-
 ## Validate JSON
 
-Use the bundled CLI to validate JSON documents against MOVA schemas:
+Use the local CLI from this repository to validate JSON documents against MOVA schemas:
 
 ```bash
 # Validate an envelope example by schema $id
-npx mova-validate --schema https://mova.dev/schemas/env.instruction_profile_publish_v1.schema.json examples/env.instruction_profile_publish_v1.example.json
+node bin/mova-validate.mjs --schema https://mova.dev/schemas/env.instruction_profile_publish_v1.schema.json examples/env.instruction_profile_publish_v1.example.json
 
 # Validate against another schema $id
-npx mova-validate --schema https://mova.dev/schemas/ds.mova_episode_core_v1.schema.json examples/env.security_event_store_v1.example.json
+node bin/mova-validate.mjs --schema https://mova.dev/schemas/ds.mova_episode_core_v1.schema.json examples/env.security_event_store_v1.example.json
 
 # Validate by providing a local schema file path
-npx mova-validate --schema schemas/ds.mova_schema_core_v1.schema.json examples/mova4_core_catalog.example.json
+node bin/mova-validate.mjs --schema schemas/ds.mova_schema_core_v1.schema.json examples/mova4_core_catalog.example.json
 ```
 
 **MOVA (Machine-Operable Verbal Actions)** is a language of machine-operable agreements about data and actions.
