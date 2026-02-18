@@ -15,12 +15,12 @@
 - Document file names with `mova_4.1.1_*` are kept for path stability; canonical product version is now 5.0.0.
 - This README provides navigation; normative texts are located in `docs/`.
 - Release notes for this major update: `docs/MOVA_5.0.0_RELEASE_NOTES.md`.
+- Agent-domain contracts were split to a separate profile repository: `https://github.com/mova-compact/mova-agent-profile`.
 - Feedback and changes go through Issues/PRs; the core stays under the author's control.
 
 ## Quickstart
 1. Read this README for goals, an overview, and a list of artefacts.
 2. Open `docs/mova_4.1.1_core.md` and `docs/mova_4.1.1_global_and_verbs.md` for the core model and verb catalogue.
-   For agent contracts and execution envelopes, read `docs/mova_4.1.1_agents_core.md`.
 3. Review `schemas/` and matching examples in `examples/` to see actual JSON structures.
 4. Run `npm test` to confirm the schemas validate in your environment.
 5. For history, compare with the archive at `docs/archive/4.0.0/` (do not modify its contents).
@@ -221,7 +221,7 @@ MOVA 5.0.0 defines:
 The conceptual model is described in:
 
 - `docs/mova_4.1.1_episodes_and_genetic_layer.md`.
-- `docs/mova_4.1.1_agents_core.md` (agent contract + execute/result envelope flow).
+- Agent profile extension docs: `https://github.com/mova-compact/mova-agent-profile`.
 
 ---
 
@@ -304,7 +304,6 @@ The intended layout of this repository is:
   - `mova_4.1.1_security_layer.md` — security layer (instruction profiles and security events);
   - `mova_4.1.1_text_and_ui_layer.md` — text channels and UI bundles;
   - `mova_4.1.1_runtime_and_connectors.md` — runtime/connector core contracts;
-  - `mova_4.1.1_agents_core.md` — agent core contracts and execution envelopes;
   - `archive/4.0.0/` — frozen MOVA 4.0.0 documents (non-canonical).
 
 - **`schemas/`** — machine-readable JSON Schemas (JSON Schema draft 2020-12):
@@ -312,27 +311,16 @@ The intended layout of this repository is:
   - `ds.mova_episode_core_v1.schema.json`
   - `ds.security_event_episode_core_v1.schema.json`
   - `ds.instruction_profile_core_v1.schema.json`
-  - `ds.mova_agent_contract_core_v1.schema.json`
-  - `ds.mova_agent_execution_result_core_v1.schema.json`
   - `ds.runtime_binding_core_v1.schema.json`
   - `ds.connector_core_v1.schema.json`
   - `ds.ui_text_bundle_core_v1.schema.json`
   - `ds.mova4_core_catalog_v1.schema.json`
   - `env.mova4_core_catalog_publish_v1.schema.json`
   - `env.instruction_profile_publish_v1.schema.json`
-  - `env.mova_agent_profile_publish_v1.schema.json`
-  - `env.mova_agent_task_execute_v1.schema.json`
-  - `env.mova_agent_result_publish_v1.schema.json`
   - `env.security_event_store_v1.schema.json`
 
 - **`examples/`** — sample JSON documents (optional / to be extended):
   - example `ds.*` instances;
-  - agent examples:
-    - `ds.mova_agent_contract_core_v1.example.json`
-    - `ds.mova_agent_execution_result_core_v1.example.json`
-    - `env.mova_agent_profile_publish_v1.example.json`
-    - `env.mova_agent_task_execute_v1.example.json`
-    - `env.mova_agent_result_publish_v1.example.json`
   - example `env.*` envelopes;
   - example episodes.
 

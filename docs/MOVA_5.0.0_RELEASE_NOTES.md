@@ -2,29 +2,24 @@
 
 ## Summary
 
-MOVA 5.0.0 is a major version update that formalizes agent contracts as first-class core artifacts.
+MOVA 5.0.0 is a major version update for core schema unification, layering clarity, and stable envelope contracts.
 
-This release adds:
-
-- `ds.mova_agent_contract_core_v1`
-- `ds.mova_agent_execution_result_core_v1`
-- `env.mova_agent_profile_publish_v1`
-- `env.mova_agent_task_execute_v1`
-- `env.mova_agent_result_publish_v1`
-- `docs/mova_4.1.1_agents_core.md` (agent lifecycle specification text)
+Note on architecture split:
+- Agent-domain contracts are maintained in a dedicated extension repository:
+  - `https://github.com/mova-compact/mova-agent-profile`
+- This repository (`mova-spec`) remains universal core only.
 
 ## Why major version bump
 
-The language scope now explicitly includes standard contract forms for:
+The language scope in 5.0.0 stabilized:
 
-1. agent identity/profile publication,
-2. deterministic task execution requests,
-3. standardized result publication with observability references.
-
-This closes a previously externalized part of the lifecycle and is treated as a major milestone.
+1. core schema conventions and envelope framing;
+2. red-core layering boundaries for security/runtime/ui/episodes;
+3. consistent versioning and compatibility policy for canonical ids.
 
 ## Compatibility notes
 
 - Existing `_core_v1` schema ids are preserved.
 - Historical document filenames with `mova_4.1.1_*` are retained for path stability.
 - `MOVA 5.0.0` is the canonical product/version label going forward.
+- Agent profile schemas keep their existing ids and are published from the extension profile repository.
