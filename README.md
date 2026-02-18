@@ -3,6 +3,7 @@
 Українська версія: [README.uk.md](README.uk.md)
 
 ## Status and repository purpose
+- Canonical GitHub repository: `https://github.com/mova-compact/mova-spec`.
 - This repository stores the canonical MOVA 5.0.0 specification: JSON Schemas, normative documents and examples.
 - The source of truth for red-core entities (`ds.*`, `env.*`, `global.*`) lives in `schemas/` and `docs/`.
 - There is no executable code: this is a contract catalog, not a platform or agents.
