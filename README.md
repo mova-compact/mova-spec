@@ -11,7 +11,7 @@
 - The current version is 5.0.0; the 4.0.0 archive is preserved in `docs/archive/4.0.0/` for historical reference.
 - Example input and output documents are in `examples/` to illustrate data shapes.
 - Schema validity is checked locally via `npm test` (Ajv 2020-12); there are no additional automated checks.
-- CI is not configured: contributors should run validation before commits.
+- CI publish workflow is configured in `.github/workflows/publish.yml`; local `npm test` remains mandatory before commits.
 - Document file names with `mova_4.1.1_*` are kept for path stability; canonical product version is now 5.0.0.
 - This README provides navigation; normative texts are located in `docs/`.
 - Release notes for this major update: `docs/MOVA_5.0.0_RELEASE_NOTES.md`.
