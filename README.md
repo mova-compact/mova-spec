@@ -56,7 +56,7 @@ MOVA itself **never executes anything**. It contains no imperative code, no work
 Execution (agents, services, workers, tools, user interfaces) always lives outside.  
 Any executor that claims support for MOVA MUST treat it as a **contract**: what counts as valid input, valid output and a valid episode.
 
-This repository publishes the **MOVA 5.0.0 core specification** and the corresponding JSON Schemas.
+This repository contains the **MOVA 5.0.0 core specification** and the corresponding JSON Schemas.
 
 > Previous textual specs for MOVA 4.0.0 are preserved in `docs/archive/4.0.0/` for historical reference.  
 > MOVA 5.0.0 is the canonical version going forward.
@@ -368,10 +368,10 @@ Prerequisites:
 - Node.js
 - npm
 
-Install dependencies and generate/update the lockfile:
+Install local dependencies:
 
 ```bash
-npm install --package-lock-only
+npm ci
 ```
 
 Run the validation script:
