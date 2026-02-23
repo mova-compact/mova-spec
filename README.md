@@ -1,459 +1,173 @@
-# MOVA 5.0.0 — Machine-Operable Verbal Actions (Core Specification)
+# MOVA Spec 5.0.0
 
-Українська версія: [README.uk.md](README.uk.md)
+**Machine-Operable Verbal Actions — Core Specification**
 
-## Status and repository purpose
-- Canonical GitHub repository: `https://github.com/mova-compact/mova-spec`.
-- This repository stores the canonical MOVA 5.0.0 specification: JSON Schemas, normative documents and examples.
-- The source of truth for red-core entities (`ds.*`, `env.*`, `global.*`) lives in `schemas/` and `docs/`.
-- There is no executable code: this is a contract catalog, not a platform or agents.
-- This repository is maintained as source-of-truth docs/schemas (no public npm distribution workflow).
-- The current version is 5.0.0; the 4.0.0 archive is preserved in `docs/archive/4.0.0/` for historical reference.
-- Example input and output documents are in `examples/` to illustrate data shapes.
-- Schema validity is checked locally via `npm test` (Ajv 2020-12); there are no additional automated checks.
-- Local `npm test` is mandatory before commits.
-- Document file names with `mova_4.1.1_*` are kept for path stability; canonical product version is now 5.0.0.
-- This README provides navigation; normative texts are located in `docs/`.
-- Release notes for this major update: `docs/MOVA_5.0.0_RELEASE_NOTES.md`.
-- Agent-domain contracts were split to a separate profile repository: `https://github.com/mova-compact/mova-agent-profile`.
-- Feedback and changes go through Issues/PRs; the core stays under the author's control.
+MOVA is a language of machine-operable contracts for data and actions. It defines what is valid — not how to execute it.
 
-## Quickstart
-1. Read this README for goals, an overview, and a list of artefacts.
-2. Open `docs/mova_4.1.1_core.md` and `docs/mova_4.1.1_global_and_verbs.md` for the core model and verb catalogue.
-3. Review `schemas/` and matching examples in `examples/` to see actual JSON structures.
-4. Run `npm test` to confirm the schemas validate in your environment.
-5. For history, compare with the archive at `docs/archive/4.0.0/` (do not modify its contents).
-
-## Validate JSON
-
-Use the local CLI from this repository to validate JSON documents against MOVA schemas:
-
-```bash
-# Validate an envelope example by schema $id
-node bin/mova-validate.mjs --schema https://mova.dev/schemas/env.instruction_profile_publish_v1.schema.json examples/env.instruction_profile_publish_v1.example.json
-
-# Validate against another schema $id
-node bin/mova-validate.mjs --schema https://mova.dev/schemas/ds.mova_episode_core_v1.schema.json examples/env.security_event_store_v1.example.json
-
-# Validate by providing a local schema file path
-node bin/mova-validate.mjs --schema schemas/ds.mova_schema_core_v1.schema.json examples/mova4_core_catalog.example.json
+```
+Schema  (ds.*)      →  "what the data looks like"
+Envelope (env.*)    →  "what speech-act is being performed"
+Verb                →  "what type of operation"
+Global  (global.*)  →  "shared vocabulary across all layers"
 ```
 
-**MOVA (Machine-Operable Verbal Actions)** is a language of machine-operable agreements about data and actions.
-
-MOVA defines:
-
-- which **data structures** exist in a system;
-- which **operation types (verbs)** are allowed on this data;
-- how **speech-acts** are encoded as envelopes (`env.*`);
-- how **episodes of work** are recorded as structured data;
-- how a shared **semantic layer (`global.*`)** keeps terminology consistent;
-- how **security**, **text/UI**, and **runtime/connector** contracts are expressed in a vendor-neutral way.
-
-MOVA itself **never executes anything**. It contains no imperative code, no workflows and no runtime.
-
-Execution (agents, services, workers, tools, user interfaces) always lives outside.  
-Any executor that claims support for MOVA MUST treat it as a **contract**: what counts as valid input, valid output and a valid episode.
-
-This repository contains the **MOVA 5.0.0 core specification** and the corresponding JSON Schemas.
-
-> Previous textual specs for MOVA 4.0.0 are preserved in `docs/archive/4.0.0/` for historical reference.  
-> MOVA 5.0.0 is the canonical version going forward.
+MOVA itself **never executes anything**. Execution lives outside.  
+Any executor that supports MOVA treats it as a **contract**: valid input, valid output, valid episode.
 
 ---
 
-## Goals
+## Core Concepts
 
-MOVA 5.0.0 is intended to be:
+### Data Schemas (`ds.*`)
 
-- **Language-first**  
-  Everything important is structured data that can be validated.
+JSON Schema (draft 2020-12) definitions for domain objects and language artefacts. Each schema defines field types, constraints, required/optional fields, and allowed values. Schemas describe **what the data looks like**, not how it is processed.
 
-- **Runtime-agnostic**  
-  The same contracts can be used with different agents, services and platforms.
+Red-core schemas in this repository:
 
-- **Auditable**  
-  Every meaningful step of work can be recorded as a structured episode.
-
-- **Evolvable**  
-  Schemas, verbs, envelopes and catalogs change under explicit, versioned rules.
-
-- **Security-aware**  
-  Policies, guardrails and security events are first-class data, not ad-hoc code.
-
----
-
-## Core concepts
-
-### Data schemas (`ds.*`)
-
-Data schemas (`ds.*`) describe the structure and invariants of domain objects and core language artefacts.
-
-Each `ds.*` schema is a JSON Schema (draft 2020-12) and defines:
-
-- field types and constraints;
-- required vs optional fields;
-- allowed values (via enums, formats, references to `global.*`);
-- examples of valid instances (where applicable).
-
-Schemas describe **what the data looks like**, not how it is processed.
-
-Among them, MOVA 5.0.0 defines several **red core** schemas:
-
-- `ds.mova_schema_core_v1` — core language for schemas themselves;
-- `ds.mova_episode_core_v1` — core episode frame;
-- `ds.security_event_episode_core_v1` — core security event episode;
-- `ds.instruction_profile_core_v1` — core instruction profile (policies and guardrails);
-- `ds.runtime_binding_core_v1` — runtime binding core;
-- `ds.connector_core_v1` — connector core;
-- `ds.ui_text_bundle_core_v1` — UI text bundle core;
-- `ds.mova4_core_catalog_v1` — core catalog model for MOVA itself.
-
----
+| Schema | Purpose |
+|--------|---------|
+| `ds.mova_schema_core_v1` | Core language for schemas themselves |
+| `ds.mova_episode_core_v1` | Core episode frame |
+| `ds.security_event_episode_core_v1` | Security event episode |
+| `ds.instruction_profile_core_v1` | Policies and guardrails |
+| `ds.runtime_binding_core_v1` | Runtime binding |
+| `ds.connector_core_v1` | Connector contracts |
+| `ds.ui_text_bundle_core_v1` | UI text bundles |
+| `ds.mova4_core_catalog_v1` | Core catalog model |
 
 ### Verbs
 
-Verbs describe **types of operations** on data and episodes.
+Abstract operation types: `create`, `update`, `delete`, `validate`, `route`, `record`, `explain`, `plan`, `analyze`, `summarize`.
 
-They appear in:
-
-- envelopes (`env.*`) — to express intent;
-- episodes — to record what was actually done.
-
-Examples (non-exhaustive):
-
-- `create`, `update`, `delete`;
-- `validate`, `route`;
-- `record`, `aggregate`;
-- `explain`, `plan`, `analyze`, `summarize`.
-
-Verbs are **abstract operation types**, not technologies or endpoints.  
-Different executors may implement the same verb in different ways, but they must honour the same input/output contracts.
-
-The canonical verb catalogue and rules for introducing new verbs are described in:
-
-- `docs/mova_4.1.1_global_and_verbs.md`
-- `global.*` catalogs.
-
----
+Verbs appear in envelopes (to express intent) and episodes (to record what was done). Different executors may implement the same verb differently, but must honour the same input/output contracts.
 
 ### Envelopes (`env.*`)
 
-Envelopes (`env.*`) are structured **speech-acts** over data: concrete requests, commands and events.
+Structured speech-acts — requests, commands, events — that tie together a verb, data schema references, roles, and metadata.
 
-A typical envelope ties together:
+| Envelope | Purpose |
+|----------|---------|
+| `env.mova4_core_catalog_publish_v1` | Publish core catalog |
+| `env.instruction_profile_publish_v1` | Publish instruction profiles |
+| `env.security_event_store_v1` | Store security events |
 
-- a `verb` (operation type);
-- references to data schemas (`ds.*`);
-- roles (who initiates, who executes, who receives the result);
-- context and technical metadata.
+### Global Semantic Layer (`global.*`)
 
-Envelopes are the points where a human, a service and an AI agent can speak the same structured language.
+Shared vocabularies used across all schemas, envelopes, and episodes to keep terminology consistent:
 
-In MOVA 5.0.0, core envelopes include:
+| Catalog | Contents |
+|---------|----------|
+| `global.episode_type_catalog_v1` | Episode type vocabulary |
+| `global.security_catalog_v1` | Security event and action types |
+| `global.layers_and_namespaces_v1` | Layered model structure |
+| `global.text_channel_catalog_v1` | Text channel definitions |
 
-- `env.mova4_core_catalog_publish_v1` — publishing the core catalog;
-- `env.instruction_profile_publish_v1` — publishing instruction profiles;
-- `env.security_event_store_v1` — storing security event episodes.
+### Episodes & Genetic Layer
 
-The general design of envelopes and their relation to verbs and roles is covered in:
+Structured records of meaningful work steps — identifiers, timestamps, executor identity, result status, references to changed data, optional metrics and explanations. Episodes form the basis for audit, reproducibility, analytics, and a "genetic layer" (pattern memory built from many episodes).
 
-- `docs/mova_4.1.1_core.md`
-- `docs/mova_4.1.1_global_and_verbs.md`.
+### Security Layer
 
----
+First-class security contracts — not ad-hoc code:
 
-### Global semantic layer (`global.*`)
+- **Instruction profiles** (`ds.instruction_profile_core_v1`) — declarative policies and guardrails  
+- **Security events** (`ds.security_event_episode_core_v1`) — structured security episodes  
+- **Security catalogs** (`global.security_catalog_v1`) — shared security vocabulary  
+- **Model versioning** — `security_model_version` to track which security model a profile or event uses
 
-The `global.*` family defines shared vocabularies:
+### Text & UI Layer
 
-- roles (participants: `user`, `agent`, `executor`, …);
-- resources (`file_system`, `http_api`, …);
-- statuses (`pending`, `completed`, `failed`, …);
-- categories and event types;
-- security event and action types;
-- episode types;
-- text channels.
+Formalises separation between human-facing UI text (`human_ui`), model instructions (`model_instruction`), and system logs (`system_log`). Ensures prompts don't leak through UI and each channel can be audited and evolved independently.
 
-This layer does not contain logic. It is a **semantic dictionary** used across:
+### Runtime & Connectors
 
-- `ds.*` schemas,
-- `env.*` envelopes,
-- episodes and security events,
+MOVA doesn't execute, but describes where and how execution happens:
 
-to keep terminology consistent.
-
-MOVA 5.0.0 introduces, among others:
-
-- `global.episode_type_catalog_v1.json`
-- `global.security_catalog_v1.json`
-- `global.layers_and_namespaces_v1.json`
-- `global.text_channel_catalog_v1.json`
+- `ds.runtime_binding_core_v1` — runtime ids, kinds, environment profiles, capabilities  
+- `ds.connector_core_v1` — provider, resource, protocol, auth methods, rate limits, error contracts
 
 ---
 
-### Episodes and the genetic layer
+## Repository Layout
 
-Episodes are structured records of meaningful work steps.
+```
+docs/                              Normative specification documents
+  mova_4.1.1_core.md               Core language specification
+  mova_4.1.1_global_and_verbs.md   Global layer and verb catalogue rules
+  mova_4.1.1_episodes_and_genetic_layer.md
+  mova_4.1.1_layers_and_namespaces.md
+  mova_4.1.1_security_layer.md
+  mova_4.1.1_text_and_ui_layer.md
+  mova_4.1.1_runtime_and_connectors.md
+  MOVA_5.0.0_RELEASE_NOTES.md
+  archive/4.0.0/                   Frozen MOVA 4.0.0 documents
 
-An episode usually includes:
+schemas/                           JSON Schemas (draft 2020-12)
+  ds.*.schema.json                 Data structure schemas
+  env.*.schema.json                Envelope schemas
 
-- identifiers and timestamps;
-- references to input envelopes and data;
-- executor identity and environment;
-- result status and short summary;
-- references to new or changed data;
-- optional logs, metrics and explanations.
+examples/                          Sample JSON documents
 
-Episodes form the basis for:
+global.*.json                      Global semantic catalogs
 
-- audit and reproducibility;
-- analytics and optimisation;
-- a “genetic layer” (pattern memory) built from many episodes.
-
-MOVA 5.0.0 defines:
-
-- a core episode frame: `ds.mova_episode_core_v1`;
-- a core security event episode: `ds.security_event_episode_core_v1`;
-- episode type catalogs: `global.episode_type_catalog_v1.json`.
-
-The conceptual model is described in:
-
-- `docs/mova_4.1.1_episodes_and_genetic_layer.md`.
-- Agent profile extension docs: `https://github.com/mova-compact/mova-agent-profile`.
+tools/validate_all.js              Ajv-based schema validation
+bin/mova-validate.mjs              CLI validator
+```
 
 ---
 
-### Security layer
-
-The security layer is part of the red core and covers:
-
-- **instruction profiles** — declarative policies and guardrails:
-  - `ds.instruction_profile_core_v1`
-  - `env.instruction_profile_publish_v1`
-- **security events** — structured security episodes:
-  - `ds.security_event_episode_core_v1`
-  - `env.security_event_store_v1`
-- **security catalogs**:
-  - `global.security_catalog_v1.json`
-- **model versioning**:
-  - `security_model_version` to track which security model a profile or event uses.
-
-This layer is described in detail in:
-
-- `docs/mova_4.1.1_security_layer.md`.
-
----
-
-### Text and UI layer
-
-The text/UI layer formalises the separation between:
-
-- **human-facing UI text** (`human_ui`);
-- **model instructions** (`model_instruction`);
-- **system logs** (`system_log`).
-
-Core artefacts:
-
-- `global.text_channel_catalog_v1.json` — text channel definitions and rules;
-- `ds.ui_text_bundle_core_v1` — UI text bundle schema.
-
-The design ensures that:
-
-- prompts and model instructions do not leak via human UI text;
-- UI copy and model instructions can be audited and evolved separately;
-- text is treated as structured data.
-
-Details are provided in:
-
-- `docs/mova_4.1.1_text_and_ui_layer.md`.
-
----
-
-### Runtime and connectors
-
-MOVA itself does not execute code, but the core must describe **where** and **how** execution happens.
-
-Core schemas:
-
-- `ds.runtime_binding_core_v1` — runtime binding core:
-  - runtime ids, kinds, environment profiles, capabilities;
-- `ds.connector_core_v1` — connector core:
-  - provider, resource, protocol, auth methods, rate limits, error contracts.
-
-Concrete runtimes and connectors live in the infra layer as schemas that extend these cores.  
-The contracts and their role in the layered model are described in:
-
-- `docs/mova_4.1.1_runtime_and_connectors.md`.
-
----
-
-## Repository contents
-
-The intended layout of this repository is:
-
-- **`README.md`**  
-  This overview.
-
-- **`docs/`** — human-readable specification documents for MOVA 5.0.0:
-  - `mova_4.1.1_core.md` — core language specification;
-  - `mova_4.1.1_global_and_verbs.md` — global layer and verb catalogue rules;
-  - `mova_4.1.1_episodes_and_genetic_layer.md` — episodes and genetic layer;
-  - `mova_4.1.1_layers_and_namespaces.md` — layered model and namespaces;
-  - `mova_4.1.1_security_layer.md` — security layer (instruction profiles and security events);
-  - `mova_4.1.1_text_and_ui_layer.md` — text channels and UI bundles;
-  - `mova_4.1.1_runtime_and_connectors.md` — runtime/connector core contracts;
-  - `archive/4.0.0/` — frozen MOVA 4.0.0 documents (non-canonical).
-
-- **`schemas/`** — machine-readable JSON Schemas (JSON Schema draft 2020-12):
-  - `ds.mova_schema_core_v1.schema.json`
-  - `ds.mova_episode_core_v1.schema.json`
-  - `ds.security_event_episode_core_v1.schema.json`
-  - `ds.instruction_profile_core_v1.schema.json`
-  - `ds.runtime_binding_core_v1.schema.json`
-  - `ds.connector_core_v1.schema.json`
-  - `ds.ui_text_bundle_core_v1.schema.json`
-  - `ds.mova4_core_catalog_v1.schema.json`
-  - `env.mova4_core_catalog_publish_v1.schema.json`
-  - `env.instruction_profile_publish_v1.schema.json`
-  - `env.security_event_store_v1.schema.json`
-
-- **`examples/`** — sample JSON documents (optional / to be extended):
-  - example `ds.*` instances;
-  - example `env.*` envelopes;
-  - example episodes.
-
-- **`tools/`** — validation tooling:
-  - `tools/validate_all.js` — Node.js script that validates all schemas with Ajv (draft 2020-12).
-
----
-
-## Getting started
-
-### 1. Using MOVA schemas in your system
-
-If you want to validate your JSON documents against MOVA 5.0.0:
-
-1. Clone this repository.
-2. Point your JSON Schema validator (e.g. Ajv or any other) to the `schemas/` directory.
-3. Validate your data against:
-   - appropriate `ds.*` schemas for domain and core objects;
-   - `env.*` schemas for envelopes at system boundaries;
-   - episode schemas for recorded episodes and security events.
-
-MOVA does not require any particular runtime.  
-You are free to choose your own executors and infrastructure, as long as they respect these contracts.
-
----
-
-### 2. Validating schemas
-
-This repository includes a Node.js validation script based on Ajv (draft 2020-12).
-
-Prerequisites:
-
-- Node.js
-- npm
-
-Install local dependencies:
+## Quick Start
 
 ```bash
+git clone https://github.com/mova-compact/mova-spec
+cd mova-spec
 npm ci
+npm test
 ```
 
-Run the validation script:
+Validate a specific document against a schema:
 
 ```bash
-npm test
-# or
-npm run test
+node bin/mova-validate.mjs \
+  --schema https://mova.dev/schemas/ds.mova_episode_core_v1.schema.json \
+  examples/env.security_event_store_v1.example.json
 ```
 
-This will:
+---
 
-- load all JSON Schemas from `schemas/`,
-- register them in Ajv (so `$ref` by `$id` works),
-- validate each schema as a JSON Schema draft 2020-12 document.
+## Ecosystem
 
-If needed, you can add your own scripts or CLIs on top of this.
+This repository is part of the MOVA ecosystem:
 
-### 3. Authoring new schemas and envelopes
-If you want to define new types in the MOVA style:
+| Repository | Role | Link |
+|------------|------|------|
+| **mova-spec** | The language — schemas, verbs, envelopes, vocabulary | *you are here* |
+| **mova-agent-profile** | Agent domain extension — contracts, results, task envelopes | [GitHub](https://github.com/mova-compact/mova-agent-profile) |
+| **mova-agent-dictionaries** | Domain semantics — numeric ID ↔ verb/tool/condition mapping | [GitHub](https://github.com/mova-compact/mova-agent-dictionaries) |
+| **mova_sdk** | Runtime engine — Rust compact binary, contract proof, CLI/API | [GitHub](https://github.com/mova-compact/mova_sdk) |
 
-Read:
+**MOVA Spec** defines what is valid. **MOVA SDK** enforces and records it.
+**Dictionaries** give domain meaning. **Agent Profile** extends for agent-specific contracts.
 
-- `docs/mova_4.1.1_core.md`
-- `docs/mova_4.1.1_global_and_verbs.md`
-- `docs/mova_4.1.1_schema_authoring_guide.md` (when added, or follow the patterns in existing schemas)
+Two committed demo runs in `mova_sdk` show the spec in practice: a deterministic workflow (116 bytes, score 100) and an AI agent with quality gate (97 bytes, two attempts, score 96). All artifacts — `core.mova`, `sidecar.jsonl`, journal, evaluation — are inspectable directly in the repository.
 
-Follow these rules:
+---
 
-- use `ds.*` for data structures and `env.*` for speech-acts;
-- choose clear names with explicit version suffixes (`*_v1`, `*_v2`, …);
-- reuse `global.*` vocabularies where possible;
-- pick verbs from the shared verb catalogue, or propose new verbs with clear semantics and documentation;
-- avoid embedding executable logic or model prompts inside schemas; keep them as neutral contracts.
+## Versioning
 
-Provide examples for each new schema to make validation and onboarding easier.
-
-### 4. Integrating with executors and skills
-This repository does not ship any executors or domain skills.
-
-To integrate MOVA into a real system, you will typically:
-
-Implement skills that:
-
-- accept MOVA envelopes and data (`env.*`, `ds.*`);
-- perform real operations (API calls, file operations, computation, routing);
-- emit new data and episodes that conform to MOVA schemas.
-
-Use MOVA schemas strictly at system boundaries:
-
-- between users and services;
-- between services and agents;
-- when recording episodes and security events for audit and analysis.
-
-Treat the MOVA core as read-only from the executor’s point of view:
-
-- executors must adapt to MOVA, not rewrite it on the fly.
-
-## Versioning and migration
-MOVA 5.0.0 is the canonical core spec in this repository.
-
-MOVA 4.0.0 documents have been moved to `docs/archive/4.0.0/` and are frozen.
-
-All schemas in `schemas/` use JSON Schema draft 2020-12.
-
-Future breaking changes to core schemas will use new ids (for example `*_v2`), not silent changes to existing ids.
-
-If you are migrating from earlier versions (including 4.0.0), use:
-
-- `docs/mova_4.1.1_core.md`
-- `docs/mova_4.1.1_episodes_and_genetic_layer.md`
-- `docs/mova_4.1.1_security_layer.md`
-- `docs/mova_4.1.1_runtime_and_connectors.md`
-
-as the normative reference points.
+- Canonical version: **5.0.0**
+- All schemas: JSON Schema draft 2020-12
+- Breaking changes → new IDs (`*_v2`), never silent mutations
+- MOVA 4.0.0 archived in `docs/archive/4.0.0/`
 
 ## Governance
-This repository is the canonical specification of MOVA 5.0.0, maintained by the original author.
 
-The core language (schemas, envelopes, global layer, verbs and normative documents in docs/) is a single-author spec.
-
-Feedback and questions are welcome via GitHub Issues.
-
-Pull Requests that change the core language (schemas, envelopes, global layer, verbs, or normative spec documents) may be discussed, but acceptance is at the discretion of the author.
-
-Contributions to examples, tooling and non-normative notes are welcome.
-
-MOVA and the MOVA 5.0.0 specification were originally created and are maintained by Sergii Miasoiedov.
+Single-author specification maintained by Sergii Miasoiedov. Feedback via GitHub Issues welcome. PRs to core language at author's discretion; contributions to examples and tooling are welcome.
 
 ## License
-The MOVA 5.0.0 specification and JSON Schemas in this repository are licensed under the Apache License, Version 2.0.
 
-You are free to use the specification and schemas in both commercial and non-commercial projects under the terms of this license.
+Apache License 2.0
 
-The canonical MOVA 5.0.0 language definition is maintained in this repository by the original author.
-Commercial offerings around MOVA (tools, services, templates, certification, etc.) are provided separately and are not covered by this license.
+---
 
+**Website:** [mova-lab.eu](https://mova-lab.eu) · **Author:** Sergii Miasoiedov
