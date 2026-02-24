@@ -1,6 +1,6 @@
-# MOVA 4.1.1 – Operator Frame
+# MOVA – Operator Frame
 
-MOVA 4.1.1 introduces the **operator frame** as the official lens for auditing the language and products. It does not add new JSON schemas; instead, it provides a set of questions that every red-core artefact, episode, and security workload should satisfy. The frame is used to reason about intent, execution, risk and evolution without changing `_core_v1` contracts.
+MOVA introduces the **operator frame** as the official lens for auditing the language and products. It does not add new JSON schemas; instead, it provides a set of questions that every red-core artefact, episode, and security workload should satisfy. The frame is used to reason about intent, execution, risk and evolution without changing `_core_v1` contracts.
 
 ## The operator questions
 
@@ -45,11 +45,11 @@ MOVA 4.1.1 introduces the **operator frame** as the official lens for auditing t
 - what — publishing the red-core catalog (`env.mova4_core_catalog_publish_v1` with `ds.mova4_core_catalog_v1`).
 - why — enable executors/registries to validate red-core contracts.
 - where — registry / executor scope.
-- lifecycle — version updates (4.1.0 → 4.1.1) without breaking contracts.
+- lifecycle — how the artefact changes over time without breaking contracts.
 - metrics — coverage of required red-core artefacts, absence of domain contamination.
 
-## Status in MOVA 4.1.1
+## Status
 
-- The operator frame is a **normative text document** (no JSON schema) for 4.1.1.
+- The operator frame is a **normative text document** (no JSON schema) for MOVA.
 - It is required for auditing the red core, designing domain episodes, and designing security policy profiles.
-- Future versions may add `ds.operator_frame_*`, but 4.1.1 formalises the frame textually.
+- Future versions may add `ds.operator_frame_*`; MOVA 6.0.0 formalises the frame textually.

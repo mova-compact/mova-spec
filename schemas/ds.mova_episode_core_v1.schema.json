@@ -149,6 +149,21 @@
             "additionalProperties": true
           }
         },
+        "verb_id": {
+          "type": "string",
+          "description": "Identifier of the verb (operation type) performed in this episode, from the domain verb catalogue (e.g. 'analyze', 'create', 'route'). Together with tool_id it forms the action_signature := (verb_id, tool_id, target_kind?)."
+        },
+        "tool_id": {
+          "description": "Identifier of the tool (execution channel) used in this episode, from the domain tool catalogue. Use 0 (integer zero) or the string '0' to indicate a tool-less action — an operation performed without any named external tool or channel. Absence of this field is treated as unknown; use 0 explicitly for tool-less. Together with verb_id it forms the action_signature.",
+          "oneOf": [
+            { "type": "string" },
+            { "type": "integer" }
+          ]
+        },
+        "target_kind": {
+          "type": "string",
+          "description": "Optional: the kind of object being acted on (e.g. 'document', 'personal_data', 'code_file'). When present, forms the third component of the three-part action_signature := (verb_id, tool_id, target_kind). Used for finer-grained policy matching and analytics."
+        },
         "meta_episode": {
           "type": "object",
           "description": "Optional episode-specific metadata: correlation ids, traces, links to logs. Must not contain LLM instructions.",
