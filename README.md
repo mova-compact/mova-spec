@@ -155,9 +155,11 @@ This repository is part of the MOVA ecosystem:
 | **mova-agent-profile** | Agent domain extension — contracts, results, task envelopes | [GitHub](https://github.com/mova-compact/mova-agent-profile) |
 | **mova-agent-dictionaries** | Domain semantics — numeric ID ↔ verb/tool/condition mapping | [GitHub](https://github.com/mova-compact/mova-agent-dictionaries) |
 | **mova_sdk** | Runtime engine — Rust compact binary, contract proof, CLI/API | [GitHub](https://github.com/mova-compact/mova_sdk) |
+| **mova-mcp** | MCP enforcement gateway — schema + policy gate, Compact flight recorder | [GitHub](https://github.com/mova-compact/mova-mcp) |
 
 **MOVA Spec** defines what is valid. **MOVA SDK** enforces and records it.
 **Dictionaries** give domain meaning. **Agent Profile** extends for agent-specific contracts.
+**MOVA Door (mova-mcp)** is the runtime gate: every agent action passes through schema + policy before execution.
 
 Two committed demo runs in `mova_sdk` show the spec in practice: a deterministic workflow (116 bytes, score 100) and an AI agent with quality gate (97 bytes, two attempts, score 96). All artifacts — `core.mova`, `sidecar.jsonl`, journal, evaluation — are inspectable directly in the repository.
 
