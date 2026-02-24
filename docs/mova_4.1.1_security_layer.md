@@ -349,6 +349,57 @@ Executors should know which `security_model_version` they support and reject or 
 
 ---
 
+## 12. Policy matching by action_signature (MOVA 6.0.0)
+
+Instruction profile rules (in `ds.instruction_profile_core_v1`) apply to episodes and envelopes. MOVA 6.0.0 introduces a normative matching model that allows policies to target operations at three levels of specificity:
+
+### 12.1. Three levels of policy matching
+
+1. **By `action_signature`** — the most specific match: a rule targets the exact combination `(verb_id, tool_id)`, optionally also `target_kind`. Example: deny `(analyze, retrieval_tool, personal_data)`.
+
+2. **By `verb_id`** — a broad operational rule: applies to all actions with that verb regardless of tool. Example: deny all `delete` operations in the production environment.
+
+3. **By `tool_id`** — a channel/integration rule: applies to all actions through a specific tool regardless of verb. Example: log every action performed through the external API connector.
+
+### 12.2. Normative priority order
+
+**MUST**: Executors and guards MUST evaluate instruction profile rules in the following priority order, applying the **most specific matching rule first**:
+
+```
+Priority 1 (highest): action_signature match  — (verb_id, tool_id, target_kind?)
+Priority 2:           verb_id match            — (verb_id, *)
+Priority 3 (lowest):  tool_id match            — (*, tool_id)
+```
+
+If multiple rules at the same priority level match an episode, the rule with the stricter `effect` takes precedence (order: `deny` > `transform` > `warn` > `log_only` > `allow`).
+
+**Rationale**: The action_signature-first order ensures that a specific deny rule for a (verb, tool) combination cannot be silently overridden by a broad verb- or tool-level allow rule. The priority is deterministic and MUST NOT be configurable per profile (only the rules themselves are configurable).
+
+### 12.3. Rule target schema extension
+
+To express the three matching levels, a rule `target` object in `ds.instruction_profile_core_v1` SHOULD use the following fields when matching by action:
+
+```json
+"target": {
+  "kind": "action",
+  "verb_id": "analyze",
+  "tool_id": 12003,
+  "target_kind": "personal_data"
+}
+```
+
+- `verb_id` and `tool_id` are optional; omitting one means "match any value for that field";
+- `tool_id = 0` explicitly matches tool-less actions;
+- `target_kind` is optional; omitting it means "match any target kind".
+
+When `kind = "action"` is set and at least one of `verb_id` or `tool_id` is provided, the rule participates in action_signature matching. Rules with `kind` other than `"action"` use the existing matching semantics unchanged.
+
+### 12.4. Tool-less actions in policies
+
+`tool_id = 0` MUST be treated as a valid, matchable value in policy rules — not as "unknown". A rule that explicitly sets `"tool_id": 0` applies only to tool-less actions. A rule that omits `tool_id` applies to all actions regardless of tool (including tool-less).
+
+---
+
 ## Operator frame for security
 
 Security episodes are the application of the operator frame to risks and policies: `policy_profile_id`, `security_model_version`, `recommended_actions`, `actions_taken`, and `risks` align to the frame’s why/risks/result/metrics axes. The security layer in MOVA 4.1.1 is expected to be designed and audited using the operator frame described in `mova_4.1.1_operator_frame.md`.

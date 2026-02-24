@@ -1,0 +1,70 @@
+{
+  "_comment": "MOVA 6.0.0 — action_signature examples. Two episodes: one tool-less, one with tool.",
+  "_action_signature_note": "action_signature := (verb_id, tool_id, target_kind?). tool_id=0 means tool-less action.",
+
+  "episodes": [
+    {
+      "_label": "Tool-less action: action_signature = ('analyze', 0)",
+      "_action_signature": { "verb_id": "analyze", "tool_id": 0 },
+
+      "schema_id": "ds.mova_episode_core_v1",
+      "episode_id": "ep-action-sig-001",
+      "episode_type": "execution/analyze",
+      "mova_version": "6.0.0",
+      "recorded_at": "2026-02-24T12:00:00Z",
+      "verb_id": "analyze",
+      "tool_id": 0,
+      "executor": {
+        "role": "agent",
+        "executor_id": "mova-agent-001",
+        "executor_kind": "ai_model"
+      },
+      "result_status": "completed",
+      "result_summary": "Analyzed the document using internal model reasoning only, without calling any external tool.",
+      "input_envelopes": [
+        {
+          "envelope_type": "env.mova4_core_catalog_publish_v1",
+          "envelope_id": "ep-action-sig-001-input"
+        }
+      ]
+    },
+
+    {
+      "_label": "Action with tool: action_signature = ('analyze', 12003, 'document')",
+      "_action_signature": { "verb_id": "analyze", "tool_id": 12003, "target_kind": "document" },
+
+      "schema_id": "ds.mova_episode_core_v1",
+      "episode_id": "ep-action-sig-002",
+      "episode_type": "execution/analyze",
+      "mova_version": "6.0.0",
+      "recorded_at": "2026-02-24T12:01:00Z",
+      "verb_id": "analyze",
+      "tool_id": 12003,
+      "target_kind": "document",
+      "executor": {
+        "role": "agent",
+        "executor_id": "mova-agent-001",
+        "executor_kind": "ai_model",
+        "environment": {
+          "tool_name": "retrieval_service",
+          "tool_version": "1.0.0"
+        }
+      },
+      "result_status": "completed",
+      "result_summary": "Analyzed the document by calling retrieval tool (tool_id=12003) to fetch relevant passages.",
+      "input_envelopes": [
+        {
+          "envelope_type": "env.mova4_core_catalog_publish_v1",
+          "envelope_id": "ep-action-sig-002-input"
+        }
+      ]
+    }
+  ],
+
+  "_policy_matching_note": [
+    "A rule targeting action_signature ('analyze', 12003) matches episode ep-action-sig-002 only.",
+    "A rule targeting verb_id='analyze' (tool_id omitted) matches BOTH episodes.",
+    "A rule targeting tool_id=0 matches ep-action-sig-001 (tool-less) only.",
+    "Priority: action_signature > verb_id > tool_id (see docs/mova_4.1.1_security_layer.md §12.2)."
+  ]
+}

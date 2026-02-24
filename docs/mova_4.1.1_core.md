@@ -261,9 +261,38 @@ Examples of red core schemas in MOVA 4.1.1:
 
 Domain-specific schemas (for example `ds.smartlink_config_v1`) live in the **skills** or **product** layers, but may be referenced from catalogs and examples.
 
-### 3.2. Verbs
+### 3.2. Verb, Tool and Action
 
-Verbs are the **canonical operation types**. The core verb catalogue is small and stable.
+MOVA 6.0.0 introduces normative definitions for three related but distinct concepts that previously lacked explicit separation:
+
+**Verb** — an abstract type of operation ("what is being done"). Verbs are defined in domain dictionaries and referenced by `verb_id`. Examples: `create`, `update`, `route`, `analyze`, `summarize`. A verb does not prescribe a channel or implementation.
+
+**Tool** — the channel or medium through which a verb is executed ("by what means / through what"). Tools are defined in domain dictionaries and referenced by `tool_id`. A tool may represent a retrieval system, a file system, an external API, a shell, or any other execution channel. **A tool may be absent**: `tool_id = 0` (or `null`) means the action is performed without any named tool ("tool-less action").
+
+**Action** — the minimal atomic unit of impact for the purposes of policy evaluation, audit, and cross-session comparison. An action is expressed as an **action signature**:
+
+```
+action_signature := (verb_id, tool_id, target_kind?)
+```
+
+where:
+- `verb_id` — identifies the operation type (from the verb catalogue);
+- `tool_id` — identifies the execution channel (from the tool catalogue), or `0` for "tool-less";
+- `target_kind` (optional) — the kind of object being acted upon, included when present in the episode to enable finer-grained policy and analytics matching.
+
+This definition is not a new data entity. It is the **semantic interpretation** of already existing fields (`verb_id`, `tool_id`) in episode records. The action_signature provides a stable, self-contained key for policy matching and audit without requiring an external lookup table that pairs verbs with tools.
+
+#### Normative rules (MOVA 6.0.0)
+
+**MUST**: Any episode that describes a performed operation MUST be interpretable as an `action_signature`. Specifically, a conformant episode MUST carry `verb_id`; `tool_id` MUST be present and MUST be set to `0` when no tool is used.
+
+**MUST**: `tool_id = 0` is the canonical representation of a "tool-less action" — an action where the verb is executed without any named external tool or channel. Executors MUST treat `tool_id = 0` as a valid, non-error state, not as an absent or unknown value.
+
+**SHOULD**: When a meaningful `target_kind` is determinable for an episode (e.g., the kind of resource being acted on), it SHOULD be included in the episode to form a three-component action signature, enabling more specific policy matching. When absent, the signature is two-component: `(verb_id, tool_id)`.
+
+### 3.3. Verbs (operation type catalogue)
+
+Verbs are the **canonical operation types**. The core verb catalogue is small and stable. Verbs are always referenced by `verb_id` in episode records and by their string identifier in envelopes and catalogs.
 
 Typical verbs include:
 
@@ -283,7 +312,7 @@ Extensions to the verb catalogue must:
 - be documented in the verbs/global specification;
 - remain general and not tied to a single product or vendor.
 
-### 3.3. Envelopes (`env.*`)
+### 3.4. Envelopes (`env.*`)
 
 Envelopes are **typed messages** that perform speech-acts over data. They:
 
@@ -306,7 +335,7 @@ Examples in MOVA 4.1.1:
 
 Envelopes do not specify **how** an executor must handle a request or event; they only define the structured content and its meaning.
 
-### 3.4. Episodes
+### 3.5. Episodes
 
 Episodes (`ds.mova_episode_core_v1` and its specialisations) are:
 
@@ -430,11 +459,11 @@ Executors and tools should:
 
 ---
 
-# Applicability to MOVA 4.1.1
+# Applicability note
 
-This is the reviewed 4.1.0 text for MOVA 4.1.1. The core structure, verbs, runtime/connector concepts remain valid; 4.1.1 only clarifies security/text/layers and adds the operator frame (see `MOVA_4.1.1_RELEASE_NOTES.md` and related docs).
+This document was originally written for MOVA 4.1.1. In MOVA 6.0.0 the file path is preserved for stability; the constitutional core remains valid. Section 3.2 (Verb, Tool and Action) is new to MOVA 6.0.0 and introduces the `action_signature` semantic. See `MOVA_6.0.0_RELEASE_NOTES.md` for a full change summary.
 
 ---
 
-This document defines the **constitutional core** of MOVA 4.1.1.  
+This document defines the **constitutional core** of MOVA.
 All higher-level artefacts (domain skills, products, zero-code tools, MOVA-based experts and self-improvement layers) must treat this core as a stable contract and build on top of it without redefining or weakening its guarantees.

@@ -58,9 +58,9 @@ Global catalogs are regular JSON documents that can be:
 
 ---
 
-## Applicability to MOVA 4.1.1
+## Applicability note
 
-This is the reviewed 4.1.0 text for MOVA 4.1.1. Core global/verb concepts are unchanged; 4.1.1 clarifies security/text/layers/operator-frame. See `MOVA_4.1.1_RELEASE_NOTES.md` and related docs for the clarifications.
+This document was originally written for MOVA 4.1.1. File path is preserved for stability. In MOVA 6.0.0 sections 4.5 (Verb and tool defined separately), 4.6 (action_labels), and the renumbered 4.7 (extending verb catalogue) are new. See `MOVA_6.0.0_RELEASE_NOTES.md` for a full change summary.
 
 ## 2. Global catalogs stabilised in MOVA 4.1.1
 
@@ -358,7 +358,52 @@ Verbs and episodes together provide:
 - a description of intent (`verb` in envelopes);
 - a description of what actually took place (`episode_type`, `result_status`, `result_summary` in episodes).
 
-### 4.5. Extending the verb catalogue
+### 4.5. Verb and tool are defined separately; action is derived
+
+Domain dictionaries (in `mova-agent-dictionaries` or equivalent) define verbs and tools as **independent, separate vocabularies**. There is no requirement to enumerate valid (verb, tool) pairs in any dictionary. Instead:
+
+- the **verb dictionary** defines what kinds of operations exist (`verb_id` → label, description, status);
+- the **tool dictionary** defines what execution channels exist (`tool_id` → label, description, kind);
+- an **action** is the combination of a specific verb with a specific tool **at the moment of execution or recording** — it is derived from the episode record, not declared in the dictionary.
+
+**Normative rule (MOVA 6.0.0)**:
+**MUST NOT**: Domain dictionaries MUST NOT enumerate explicit (verb, tool) pairs as a way to define "valid actions". Validity of an action is determined at execution time by applying instruction profile rules to the `action_signature`, not by checking membership in a pre-defined list.
+
+This design ensures that:
+- adding a new tool does not require updating a list of verb↔tool pairs;
+- adding a new verb does not require updating every tool's allowed-action set;
+- policies operate on the live action_signature, making them self-contained and portable.
+
+### 4.6. Action labels (`action_labels`) — optional, for readability
+
+Domain dictionaries MAY include an optional `action_labels` section to provide **human-readable labels for frequently occurring or semantically significant actions**. This section is purely informational — it does not define identity, validity, or policy scope.
+
+Format:
+
+```json
+"action_labels": [
+  {
+    "verb_id": "analyze",
+    "tool_id": 12003,
+    "label": "extract_via_retrieval",
+    "description": "Analyzing/extracting data through a retrieval tool (e.g. vector search)."
+  },
+  {
+    "verb_id": "create",
+    "tool_id": 0,
+    "label": "create_tool_less",
+    "description": "Creating a record without invoking any named external tool."
+  }
+]
+```
+
+Rules for `action_labels`:
+- **No ID space**: labels in this section have no normative identifier; identity remains the `(verb_id, tool_id)` tuple.
+- **Not exhaustive**: absence of a label for a given `(verb_id, tool_id)` pair does not mean the action is invalid.
+- **UI and journal use only**: labels are for display, logging, and debugging. They MUST NOT be used as policy keys.
+- **Duplication is forbidden**: the same `(verb_id, tool_id)` pair MUST NOT appear in `action_labels` more than once per dictionary.
+
+### 4.7. Extending the verb catalogue
 
 New verbs may be introduced when:
 
