@@ -1,8 +1,8 @@
-# MOVA 4.1.1 — Text Channels and UI Layer (Core)
+# MOVA — Text Channels and UI Layer (Core)
 
 > Audience: product/UX designers, schema authors, and tool builders who manage human-facing text and model instructions in MOVA-based systems.
 
-This document describes how MOVA 4.1.1 separates and governs **human-facing text**, **model instructions**, and **system/log text**. It is a **patch update** over 4.1.0 with no breaking JSON changes. The text/UI layer is part of the red core and relies on two mandatory artefacts:
+This document describes how MOVA separates and governs **human-facing text**, **model instructions**, and **system/log text**. The text/UI layer is part of the red core and relies on two mandatory artefacts:
 
 - `ds.ui_text_bundle_core_v1.schema.json` — structured bundles of UI text.
 - `global.text_channel_catalog_v1.json` — canonical catalog of text channels and rules.
@@ -13,14 +13,6 @@ It is also aligned with:
 - `ds.mova_episode_core_v1.schema.json`
 - `ds.mova4_core_catalog_v1.schema.json`
 - `global.layers_and_namespaces_v1.json`
-
-## What’s new in 4.1.1 (text & UI layer)
-
-- `ds.ui_text_bundle_core_v1` and `global.text_channel_catalog_v1` are fixed as mandatory red-core artefacts.
-- Bundles must use channel ids from the global catalog; ad-hoc channels are disallowed.
-- Rules for separating human vs model vs log text are made explicit and tied to catalog categories.
-
----
 
 ## 1. Purpose
 
@@ -86,7 +78,7 @@ UI text is structured using `ds.ui_text_bundle_core_v1.schema.json`. Typical fie
   - `text` instruction/guidance for the model.
   - `lang` optional.
 
-The schema keeps `_core_v1` identifiers unchanged; 4.1.1 only clarifies channel alignment and separation.
+The schema keeps `_core_v1` identifiers unchanged; channels are defined in the global catalog.
 
 ### 4.2. Separation of concerns
 
@@ -150,7 +142,7 @@ The schema keeps `_core_v1` identifiers unchanged; 4.1.1 only clarifies channel 
 
 ---
 
-## 8. Checklist for text and UI design in MOVA 4.1.1
+## 8. Checklist for text and UI design in MOVA
 
 - Use text channels: assign each text to `human_ui`, `model_instruction`, or `system_log`; avoid `mixed_legacy` for new work.
 - Create UI text bundles: use `ds.ui_text_bundle_core_v1` per question/section/message; set `bundle_id` and `context_id`.

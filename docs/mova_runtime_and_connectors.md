@@ -1,8 +1,8 @@
-# MOVA 4.1.1 — Runtime and Connector Core
+# MOVA — Runtime and Connector Core
 
 > Audience: platform and infra engineers, skill authors, and tool builders who need to describe how MOVA artefacts are bound to execution environments and external systems.
 
-This document describes the **runtime and connector core** of MOVA 4.1.1.
+This document describes the **runtime and connector core** of MOVA.
 
 It explains how:
 
@@ -22,35 +22,6 @@ It is aligned with the following schemas and catalogs:
 
 ---
 
-## Applicability to MOVA 4.1.1
-
-This is the reviewed 4.1.0 text for MOVA 4.1.1. Runtime/connector core concepts are unchanged; 4.1.1 clarifies mandatory layers, security/text alignment, and adds the operator frame (see `MOVA_4.1.1_RELEASE_NOTES.md`).
-
-## 1. Purpose
-
-MOVA 4.1.1 is a language of **contracts**, not an execution engine.  
-However, MOVA-based systems must still describe:
-
-- **where** skills and scenarios are executed;
-- **how** they are bound to runtimes;
-- **which external systems** they can talk to;
-- **under which constraints** (auth, rate limits, error contracts).
-
-The runtime and connector core provides:
-
-- a **vendor-neutral schema** for describing runtimes:
-  - `ds.runtime_binding_core_v1`;
-- a **vendor-neutral schema** for describing connectors:
-  - `ds.connector_core_v1`.
-
-These schemas do not contain executable code.  
-They describe capabilities and bindings in a way that is:
-
-- stable,
-- machine-readable,
-- and compatible with the MOVA layered model.
-
----
 
 ## 2. Runtime binding core
 
@@ -405,7 +376,7 @@ This integration makes it possible to:
 
 ## 6. Core catalog integration
 
-The MOVA 4.1.1 core catalog:
+The MOVA core catalog:
 
 - `ds.mova4_core_catalog_v1.schema.json`
 - `mova4_core_catalog.example.json`
@@ -461,7 +432,7 @@ However:
 
 ## 8. Responsibilities of platform and tool builders
 
-Platform and tool builders working with MOVA 4.1.1 should:
+Platform and tool builders working with MOVA should:
 
 1. **Implement schema validation**
 

@@ -1,17 +1,11 @@
-# MOVA 4.1.1 — Layered Model and Namespaces
+# MOVA — Layered Model and Namespaces
 
 > Canonical language of this document: **English for text and identifiers** (`ds.*`, `env.*`, `global.*`, `skill.*`, etc.).  
 > This document describes how the MOVA language is embedded into larger systems through a layered architecture and a consistent namespace policy.
 
-## What’s new in 4.1.1 (layers & namespaces)
-
-- Security layer is a mandatory part of the red core (see security-layer doc).
-- Text/UI layer relies on `global.text_channel_catalog_v1.json` and `ds.ui_text_bundle_core_v1.schema.json` and is in the red core.
-- Smartlink and other domain-specific examples are explicitly placed in the skills layer, not in the core.
-
 ## 1. Purpose
 
-The MOVA 4.1.1 core specification defines the language itself:
+The MOVA core specification defines the language itself:
 
 - data schemas (`ds.*`);
 - envelopes (`env.*`);
@@ -41,7 +35,7 @@ The canonical JSON representation of this model is provided by:
 
 ## 2. Overview of layers
 
-MOVA 4.1.1 works with three main technical layers and one product layer on top.
+MOVA works with three main technical layers and one product layer on top.
 
 ### 2.1. Red core layer
 
@@ -131,7 +125,7 @@ The infra layer answers the question:
 
 Relation to runtime & connectors doc:
 
-- See `mova_4.1.1_runtime_and_connectors.md` for detailed patterns of runtime and connector descriptions.
+- See `mova_runtime_and_connectors.md` for detailed patterns of runtime and connector descriptions.
 
 ### 2.4. Applications and UX
 
@@ -159,7 +153,7 @@ Identifiers (IDs) in MOVA — schema ids, envelope ids, catalog ids — follow a
 
 ### 3.1. General identifier rules
 
-For `ds.*`, `env.*`, `global.*` and other identifiers, MOVA 4.1.1 adopts the following general rules:
+For `ds.*`, `env.*`, `global.*` and other identifiers, MOVA adopts the following general rules:
 
 - Identifiers must be **stable**:
   - once published, an id must not silently change meaning;
@@ -414,7 +408,7 @@ As long as infra continues to satisfy the contracts expressed in the red core an
 
 ## 7. Checklist for schema authors
 
-When adding new schemas or catalogs to a MOVA 4.1.1 universe:
+When adding new schemas or catalogs to a MOVA universe:
 
 1. **Identify the layer**
 

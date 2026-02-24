@@ -1,10 +1,10 @@
-# MOVA 4.1.1 — Global Layer and Verbs (`global.*` and verbs)
+# MOVA — Global Layer and Verbs (`global.*` and verbs)
 
 > Audience: authors of MOVA schemas and skills, and MOVA-based tools and experts that maintain catalogs, dictionaries and verbs.
 
-This document describes the **global layer** (`global.*`) and the **verb catalogue** for MOVA 4.1.1.
+This document describes the **global layer** (`global.*`) and the **verb catalogue** for MOVA.
 
-It is aligned with the MOVA 4.1.1 core specification and the following schemas and catalogs in the repository:
+It is aligned with the MOVA core specification and the following schemas and catalogs in the repository:
 
 - `ds.mova_schema_core_v1.schema.json`
 - `ds.mova_episode_core_v1.schema.json`
@@ -60,11 +60,11 @@ Global catalogs are regular JSON documents that can be:
 
 ## Applicability note
 
-This document was originally written for MOVA 4.1.1. File path is preserved for stability. In MOVA 6.0.0 sections 4.5 (Verb and tool defined separately), 4.6 (action_labels), and the renumbered 4.7 (extending verb catalogue) are new. See `MOVA_6.0.0_RELEASE_NOTES.md` for a full change summary.
+This document was originally written for MOVA. File path is preserved for stability. In MOVA 6.0.0 sections 4.5 (Verb and tool defined separately), 4.6 (action_labels), and the renumbered 4.7 (extending verb catalogue) are new. See `MOVA_6.0.0_RELEASE_NOTES.md` for a full change summary.
 
-## 2. Global catalogs stabilised in MOVA 4.1.1
+## 2. Global catalogs stabilised in MOVA
 
-MOVA 4.1.1 stabilises a set of core `global.*` catalogs that are part of the constitutional red core.
+MOVA stabilises a set of core `global.*` catalogs that are part of the constitutional red core.
 
 ### 2.1. Security catalog
 
@@ -222,7 +222,7 @@ These catalogs:
 
 ## 3. Design principles for `global.*`
 
-The following principles apply to all `global.*` catalogs in MOVA 4.1.1.
+The following principles apply to all `global.*` catalogs in MOVA.
 
 ### 3.1. Consistency
 
@@ -279,7 +279,7 @@ Domain-specific or vendor-specific catalogs (for example for particular industri
 
 ---
 
-## 4. Verbs in MOVA 4.1.1
+## 4. Verbs in MOVA
 
 ### 4.1. Purpose of verbs
 
@@ -294,7 +294,7 @@ They say **what kind of action** is requested or recorded, not how to perform it
 
 ### 4.2. Core verb set
 
-MOVA 4.1.1 stabilises the following core verbs in the red core:
+MOVA stabilises the following core verbs in the red core:
 
 - `create`  
   Create a new record.
@@ -450,7 +450,7 @@ The catalog is published using:
 
 - `env.mova4_core_catalog_publish_v1` with verb `publish`.
 
-In MOVA 4.1.1, the catalog references:
+In MOVA, the catalog references:
 
 - security episode core;
 - instruction profile core;

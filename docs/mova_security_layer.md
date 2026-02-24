@@ -1,8 +1,8 @@
-# MOVA 4.1.1 – Security Layer (Core)
+# MOVA – Security Layer (Core)
 
 > Audience: authors of instruction profiles, platform owners, security engineers, and tool builders who must enforce safety and policy constraints in MOVA-based systems.
 
-This document describes the **security layer** of MOVA 4.1.1. It is a **patch update** of 4.1.0 with **no breaking JSON changes**: all schemas remain `_core_v1`, but the security layer is now treated as a **mandatory part of the red core** for every MOVA 4.1.x product.
+This document describes the **security layer** of MOVA. All schemas remain `_core_v1`; the security layer is a mandatory part of the red core for every MOVA product.
 
 It is aligned with the following schemas, catalogs and examples:
 
@@ -17,24 +17,15 @@ It is aligned with the following schemas, catalogs and examples:
 - `global.episode_type_catalog_v1.json`
 - `ds.mova4_core_catalog_v1.schema.json`
 
-## What’s new in 4.1.1 (vs 4.1.0)
-
-- Security layer is explicitly **mandatory** in the red core for all MOVA 4.1.x products.
-- `global.security_catalog_v1` is the **normative source** for `security_event_type`, categories, severities, and `security_action_type` used in profiles and events.
-- `security_model_version` usage is clarified for both instruction profiles and security event episodes.
-- Recording security events via `env.security_event_store_v1` is explicitly required; at least one instruction profile must exist per executor.
-
----
-
 ## 1. Purpose and scope
 
-The MOVA 4.1.1 security layer (red core) aims to:
+The MOVA security layer (red core) aims to:
 
 - provide a **standard way to describe policies and guardrails** (instruction profiles);
 - provide a **standard way to record security events** as episodes;
 - offer a **shared vocabulary** for security event types and actions;
 - make security decisions **auditable, analysable and evolvable** over time;
-- ensure every MOVA 4.1.x product **carries and records** its security intent and evidence.
+- ensure every MOVA product **carries and records** its security intent and evidence.
 
 The security layer:
 
@@ -52,7 +43,7 @@ Instead, it defines **contracts** that any executor or platform can use:
 
 ## 2. Security model in MOVA
 
-The security model in MOVA 4.1.1 is expressed through three main building blocks:
+The security model in MOVA is expressed through three main building blocks:
 
 1. **Instruction profiles**
 
@@ -84,7 +75,7 @@ These elements are linked by a common field:
 
 ---
 
-## 3. Core security artefacts (mandatory in 4.1.1)
+## 3. Core security artefacts (mandatory)
 
 The security layer of the red core consists of the following required artefacts:
 
@@ -94,7 +85,7 @@ The security layer of the red core consists of the following required artefacts:
 - `env.security_event_store_v1` — envelope for recording security event episodes.
 - `global.security_catalog_v1` — catalog of security event types, action types and policy profiles.
 
-Any MOVA 4.1.x product MUST:
+Any MOVA product MUST:
 
 - have at least one active instruction profile (`ds.instruction_profile_core_v1`) published via `env.instruction_profile_publish_v1`;
 - be able to record security event episodes via `env.security_event_store_v1`, including `policy_profile_id` and `policy_ref` when available;
@@ -308,7 +299,7 @@ The concrete set of event types and categories is defined in `global.security_ca
 
 ## 6. Security catalog and action types
 
-`global.security_catalog_v1.json` is the normative source for security vocabularies in MOVA 4.1.1:
+`global.security_catalog_v1.json` is the normative source for security vocabularies in MOVA:
 
 - `security_event_type`, `security_event_category` and `severity` in `ds.security_event_episode_core_v1` must use ids defined in the catalog (or namespaced extensions that do not shadow core values).
 - `recommended_actions[*].action_type` and `actions_taken[*].action_type` must use ids from `security_action_type[*].id`.
@@ -402,7 +393,7 @@ When `kind = "action"` is set and at least one of `verb_id` or `tool_id` is prov
 
 ## Operator frame for security
 
-Security episodes are the application of the operator frame to risks and policies: `policy_profile_id`, `security_model_version`, `recommended_actions`, `actions_taken`, and `risks` align to the frame’s why/risks/result/metrics axes. The security layer in MOVA 4.1.1 is expected to be designed and audited using the operator frame described in `mova_4.1.1_operator_frame.md`.
+Security episodes are the application of the operator frame to risks and policies: `policy_profile_id`, `security_model_version`, `recommended_actions`, `actions_taken`, and `risks` align to the frame’s why/risks/result/metrics axes. The security layer in MOVA is expected to be designed and audited using the operator frame described in `mova_operator_frame.md`.
 
 ---
 
@@ -432,7 +423,7 @@ Aggregators in the genetic layer may, for example:
 
 ## 9. Integration into MOVA-based products
 
-Every MOVA 4.1.1 product must meet these minimum integration requirements:
+Every MOVA product must meet these minimum integration requirements:
 
 1. **Instruction profiles**  
    Each executor must have at least one active `instruction_profile` published via `env.instruction_profile_publish_v1` and linked to the relevant envelope ids and roles.
@@ -482,7 +473,7 @@ Executors and guards in a MOVA-based system have the following responsibilities 
 
 ## 11. Checklist for security layer integration
 
-When integrating MOVA 4.1.1 security into a system:
+When integrating MOVA security into a system:
 
 1. **Implement schema validation**
 
@@ -515,9 +506,9 @@ When integrating MOVA 4.1.1 security into a system:
 
 ---
 
-The MOVA 4.1.1 security layer is designed to be:
+The MOVA security layer is designed to be:
 
-- **mandatory** — every MOVA 4.1.x product must ship with profiles, event logging and catalog alignment;
+- **mandatory** — every MOVA product must ship with profiles, event logging and catalog alignment;
 - **minimal** — only essential contracts are part of the red core;
 - **extensible** — organisations can extend catalogs and profiles via namespaced ids;
 - **auditable** — all important events and policies are expressed as structured data and episodes;

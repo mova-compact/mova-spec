@@ -10,7 +10,7 @@ This is a **non-breaking additive release**: all existing `_core_v1` schema ids,
 
 ## What changed
 
-### 1. Core specification (`docs/mova_4.1.1_core.md`) — new §3.2
+### 1. Core specification (`docs/mova_core.md`) — new §3.2
 
 Added normative definitions:
 
@@ -27,7 +27,7 @@ Normative rules added:
 - **MUST**: `tool_id = 0` is a valid, non-error value meaning "no external tool was used".
 - **SHOULD**: `target_kind`, when determinable, SHOULD be included for finer-grained policy matching.
 
-### 2. Global layer and verbs (`docs/mova_4.1.1_global_and_verbs.md`) — new §4.5 and §4.6
+### 2. Global layer and verbs (`docs/mova_global_and_verbs.md`) — new §4.5 and §4.6
 
 **§4.5 — Verb and tool are defined separately; action is derived**
 
@@ -41,7 +41,7 @@ Normative rules added:
 - Labels are for UI and journal display only — they carry no normative weight.
 - Identity remains the `(verb_id, tool_id)` tuple; absence of a label does not mean an action is invalid.
 
-### 3. Security layer (`docs/mova_4.1.1_security_layer.md`) — new §12
+### 3. Security layer (`docs/mova_security_layer.md`) — new §12
 
 **§12 — Policy matching by action_signature**
 
@@ -87,7 +87,7 @@ Inline annotations show the derived `action_signature` for each episode and expl
 
 **For existing implementations**: no migration required. Existing `ds.mova_episode_core_v1` documents without `verb_id`/`tool_id` remain valid. Adding these fields to new episodes is recommended for full policy and audit alignment.
 
-**For policy authors**: to use action_signature-based rules in `ds.instruction_profile_core_v1`, set `target.kind = "action"` and specify `verb_id` and/or `tool_id` in the rule target. See `docs/mova_4.1.1_security_layer.md §12.3`.
+**For policy authors**: to use action_signature-based rules in `ds.instruction_profile_core_v1`, set `target.kind = "action"` and specify `verb_id` and/or `tool_id` in the rule target. See `docs/mova_security_layer.md §12.3`.
 
 **For dictionary maintainers**: do not add (verb, tool) pair tables to dictionaries. Add `action_labels` only if human-readable labels for frequent actions are needed for UI.
 
@@ -96,6 +96,6 @@ Inline annotations show the derived `action_signature` for each episode and expl
 ## Compatibility
 
 - All `_core_v1` schema ids: **unchanged**.
-- All `mova_4.1.1_*` document filenames: **unchanged** (retained for path stability).
+- All `mova_*` document filenames (formerly `mova_4.1.1_*`): **path-stable across versions**.
 - All existing examples and envelopes: **valid without modification**.
 - New fields in `ds.mova_episode_core_v1`: **optional** — no breaking change.

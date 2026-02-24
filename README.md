@@ -47,7 +47,7 @@ Red-core schemas in this repository:
 ```
 action_signature := (verb_id, tool_id, target_kind?)
 ```
-`tool_id = 0` is canonical for tool-less. Policies can match by `action_signature`, `verb_id`, or `tool_id`, with action_signature taking highest priority (see `docs/mova_4.1.1_security_layer.md §12`).
+`tool_id = 0` is canonical for tool-less. Policies can match by `action_signature`, `verb_id`, or `tool_id`, with action_signature taking highest priority (see `docs/mova_security_layer.md §12`).
 
 ### Envelopes (`env.*`)
 
@@ -100,13 +100,13 @@ MOVA doesn't execute, but describes where and how execution happens:
 
 ```
 docs/                              Normative specification documents
-  mova_4.1.1_core.md               Core language specification (verb/tool/action §3.2 new in 6.0.0)
-  mova_4.1.1_global_and_verbs.md   Global layer, verb catalogue, action_labels (§4.5–4.6 new in 6.0.0)
-  mova_4.1.1_episodes_and_genetic_layer.md
-  mova_4.1.1_layers_and_namespaces.md
-  mova_4.1.1_security_layer.md     Policy matching by action_signature §12 new in 6.0.0
-  mova_4.1.1_text_and_ui_layer.md
-  mova_4.1.1_runtime_and_connectors.md
+  mova_core.md               Core language specification (verb/tool/action §3.2 new in 6.0.0)
+  mova_global_and_verbs.md   Global layer, verb catalogue, action_labels (§4.5–4.6 new in 6.0.0)
+  mova_episodes_and_genetic_layer.md
+  mova_layers_and_namespaces.md
+  mova_security_layer.md     Policy matching by action_signature §12 new in 6.0.0
+  mova_text_and_ui_layer.md
+  mova_runtime_and_connectors.md
   MOVA_6.0.0_RELEASE_NOTES.md
   MOVA_5.0.0_RELEASE_NOTES.md
   archive/4.0.0/                   Frozen MOVA 4.0.0 documents
@@ -169,7 +169,6 @@ Two committed demo runs in `mova_sdk` show the spec in practice: a deterministic
 - All schemas: JSON Schema draft 2020-12
 - Breaking changes → new IDs (`*_v2`), never silent mutations
 - MOVA 4.0.0 archived in `docs/archive/4.0.0/`
-- Historical document filenames (`mova_4.1.1_*`) are retained for path stability
 
 ## Governance
 
