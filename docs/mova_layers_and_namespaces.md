@@ -1,6 +1,6 @@
 # MOVA — Layered Model and Namespaces
 
-> Canonical language of this document: **English for text and identifiers** (`ds.*`, `env.*`, `global.*`, `skill.*`, etc.).  
+> Canonical language of this document: **English for text and identifiers** (`ds.*`, `env.*`, `global.*`, `contract.*`, etc.).  
 > This document describes how the MOVA language is embedded into larger systems through a layered architecture and a consistent namespace policy.
 
 ## 1. Purpose
@@ -16,7 +16,7 @@ The MOVA core specification defines the language itself:
 This document explains how that language is used in a **layered model**:
 
 - as a **constitutional core** (red core layer);
-- on top of which **skills and domain scenarios** are built (skills layer);
+- on top of which **contracts and domain scenarios** are built (contracts layer);
 - and on top of which **runtime bindings and connectors** are defined (infra layer);
 - finally consumed by **applications and user experiences** (applications / UX layer).
 
@@ -24,12 +24,13 @@ The goals are to:
 
 - separate responsibilities between layers;
 - keep the **red core stable and vendor-neutral**;
-- give skills and products room to evolve independently;
+- give contracts and products room to evolve independently;
 - and show where MOVA is applied as a contract for data and actions.
 
 The canonical JSON representation of this model is provided by:
 
-- `global.layers_and_namespaces_v1.json`.
+- `global.layers_and_namespaces_v2.json` (current);
+- `global.layers_and_namespaces_v1.json` (legacy compatibility).
 
 ---
 
@@ -72,9 +73,9 @@ The red core answers the question:
 
 > “What does it mean, in general, to speak MOVA?”
 
-### 2.2. Skills layer
+### 2.2. Contracts layer
 
-The **skills layer** contains domain-specific logic expressed in MOVA terms. It includes:
+The **contracts layer** contains domain-specific process contracts expressed in MOVA terms. It includes:
 
 - domain-level `ds.*` schemas, for example:
   - `ds.file_cleanup_target_v1`,
@@ -83,26 +84,28 @@ The **skills layer** contains domain-specific logic expressed in MOVA terms. It 
   - `ds.smartlink_route_decision_v1`,
   - social and e-commerce schemas;
 - domain-level `env.*` envelopes that combine core verbs with domain data;
-- skill descriptors and metadata (`skill.*` if such schemas are defined).
+- contract descriptors and metadata (`contract.*` where needed by external tooling).
 
 Typical responsibilities of this layer:
 
-- define **scenarios and skills** for concrete domains (file cleanup, routing, social forms, etc.);
+- define **scenarios and contracts** for concrete domains (file cleanup, routing, social forms, etc.);
 - decide **where episodes are recorded** and how they reference domain data;
 - map domain actions to MOVA verbs and envelopes.
 
-The skills layer answers the question:
+The contracts layer answers the question:
 
 > “What can this MOVA-based system actually do in this domain?”
 
-Smartlink, social, ecommerce and similar product/domain packs are **skills-layer examples**, not part of the red core.
+Smartlink, social, ecommerce and similar product/domain packs are **contracts-layer examples**, not part of the red core.
+Full contract package canon is maintained in `mova-contract-spec`; this document defines only language-layer boundaries.
+External skill ecosystems may map to MOVA contracts for compatibility, but `skills` is not canonical MOVA layer vocabulary.
 
 ### 2.3. Infra layer (runtimes and connectors)
 
 The **infra layer** connects MOVA artefacts to real execution environments and external systems. It includes:
 
 - **runtime binding descriptions**, for example:
-  - `ds.runtime_binding_core_v1` instances that describe how scenarios and skills are bound to:
+  - `ds.runtime_binding_core_v1` instances that describe how scenarios and contracts are bound to:
     - serverless workers,
     - edge runtimes,
     - browser applications,
@@ -121,7 +124,7 @@ Infra schemas and configurations:
 
 The infra layer answers the question:
 
-> “Where and how are these MOVA skills actually executed, and which external systems do they talk to?”
+> “Where and how are these MOVA contracts actually executed, and which external systems do they talk to?”
 
 Relation to runtime & connectors doc:
 
@@ -137,7 +140,7 @@ Above these technical layers sit **applications and user experiences**:
 
 Applications:
 
-- call into the skills and infra layers via MOVA envelopes and APIs built on top of them;
+- call into the contracts and infra layers via MOVA envelopes and APIs built on top of them;
 - present human-facing text that respects the `human_ui` / `model_instruction` separation;
 - consume episodes and analytics to improve the user experience.
 
@@ -170,7 +173,7 @@ The JSON schema `$id` fields for red core schemas follow the same ids, for examp
 
 ### 3.2. Red core namespaces
 
-Red core identifiers are reserved and must not be reused in skills or infra for unrelated purposes.
+Red core identifiers are reserved and must not be reused in contracts or infra for unrelated purposes.
 
 Examples include:
 
@@ -199,9 +202,9 @@ Characteristics of red core ids:
 
 No domain or vendor code is allowed to introduce new identifiers under `ds.mova_*` or other reserved core prefixes.
 
-### 3.3. Skills namespaces
+### 3.3. Contracts namespaces
 
-Skills and domain packages define their own namespaces on top of the core.
+Contracts and domain packages define their own namespaces on top of the core.
 
 Examples:
 
@@ -220,10 +223,10 @@ Typical patterns:
   - `smartlink_*`,
   - `social_*`,
   - `ecommerce_*`, etc.
-- Envelopes for skills may reuse verbs and patterns from the red core:
-  - for example, a `route` envelope in a Smartlink skill.
+- Envelopes for contracts may reuse verbs and patterns from the red core:
+  - for example, a `route` envelope in a Smartlink contract.
 
-Skills must not:
+Contracts must not:
 
 - define new schemas under prefixes reserved for the red core;
 - redefine the meaning of red core schemas or global catalogs.
@@ -266,47 +269,47 @@ They must not:
 
 ## 4. Layer boundaries and contracts
 
-### 4.1. Boundary between red core and skills
+### 4.1. Boundary between red core and contracts
 
-The boundary between red core and skills is defined by:
+The boundary between red core and contracts is defined by:
 
 - which schemas and catalogs are considered constitutional;
 - how domain schemas extend them.
 
 Rules:
 
-- Skills may **extend** red core schemas via `allOf`, but not **modify** them.
-- Skills may **use** red core global catalogs (for example episode types, security types, text channels).
-- Skills may propose **new global catalogs** for domain use, but these must be clearly namespaced as domain globals, not core globals.
-- Red core schemas must not depend on specific skills or products.
+- Contracts may **extend** red core schemas via `allOf`, but not **modify** them.
+- Contracts may **use** red core global catalogs (for example episode types, security types, text channels).
+- Contracts may propose **new global catalogs** for domain use, but these must be clearly namespaced as domain globals, not core globals.
+- Red core schemas must not depend on specific contracts or products.
 - Everything that calls itself **red_core** must be expressed via `ds.* / env.* / global.*` from the core catalog and must not include product- or domain-specific identifiers (Smartlink, SocialPack, Barbershop, etc.).
 
-All communication between red core and skills flows through:
+All communication between red core and contracts flows through:
 
 - shared validators (JSON Schema + global catalogs);
 - explicit references in catalog entries;
 - episode records that use agreed-upon fields and types.
 
-### 4.2. Boundary between skills and infra
+### 4.2. Boundary between contracts and infra
 
-The boundary between skills and infra is where:
+The boundary between contracts and infra is where:
 
 - domain scenarios expect certain execution capabilities;
 - infra declares what runtimes and connectors exist.
 
 Rules:
 
-- Skills may express **requirements** and **assumptions** in their own schemas and catalogs (for example, types of connectors they expect);
+- Contracts may express **requirements** and **assumptions** in their own schemas and catalogs (for example, types of connectors they expect);
 - Infra must provide **descriptions of available runtimes and connectors** using core schemas:
   - `ds.runtime_binding_core_v1`,
   - `ds.connector_core_v1`,
   - and extensions thereof.
-- Skills must not depend directly on vendor-specific details unless those are modelled as infra-level schemas.
+- Contracts must not depend directly on vendor-specific details unless those are modelled as infra-level schemas.
 
 This makes it possible to:
 
-- run the same skills with different infra backends;
-- evolve infra (change runtimes, add connectors) without changing the skills, as long as contracts are preserved.
+- run the same contracts with different infra backends;
+- evolve infra (change runtimes, add connectors) without changing the contracts, as long as contracts are preserved.
 
 ### 4.3. Boundary between infra and external systems
 
@@ -338,7 +341,7 @@ It only ensures that:
   - `ds.mova_episode_core_v1` for episodes;
   - `global.episode_type_catalog_v1` for types such as `plan/file_cleanup`, `execution/file_cleanup`.
 
-- **Skills**:
+- **Contracts**:
   - `ds.file_cleanup_target_v1` — describes what needs cleaning;
   - `ds.file_cleanup_plan_v1` — describes the plan;
   - envelopes `env.file_cleanup_plan_generate_v1`, `env.file_cleanup_execute_v1`.
@@ -353,14 +356,14 @@ It only ensures that:
 
 ### 5.2. Smartlink routing
 
-This is a **skills-layer example** (not part of the red core).
+This is a **contracts-layer example** (not part of the red core).
 
 - **Red core**:
   - core verbs including `route`;
   - `ds.ui_text_bundle_core_v1` for UI text, if used;
   - `ds.mova_episode_core_v1` for routing episodes.
 
-- **Skills**:
+- **Contracts**:
   - `ds.smartlink_config_v1` — defines routing rules and targets;
   - `ds.smartlink_route_decision_v1` — describes a single routing decision;
   - `env.smartlink_route_decision_v1` — uses verb `route`.
@@ -385,9 +388,9 @@ These examples show how the same core contracts (ds/env/global/episodes) support
 - Breaking changes require:
   - new schema ids (for example `*_v2`);
   - new catalog versions;
-  - migration plans for existing skills and infra.
+  - migration plans for existing contracts and infra.
 
-### 6.2. Skills
+### 6.2. Contracts
 
 - Can evolve more quickly than the core.
 - Should:
@@ -396,13 +399,13 @@ These examples show how the same core contracts (ds/env/global/episodes) support
 
 ### 6.3. Infra
 
-- Evolves independently of both red core and skills.
+- Evolves independently of both red core and contracts.
 - Can:
   - add new runtimes and connectors;
   - deprecate outdated connectors;
   - change deployment details.
 
-As long as infra continues to satisfy the contracts expressed in the red core and used by skills, the system remains coherent.
+As long as infra continues to satisfy the contracts expressed in the red core and used by contracts, the system remains coherent.
 
 ---
 
@@ -413,13 +416,13 @@ When adding new schemas or catalogs to a MOVA universe:
 1. **Identify the layer**
 
    - Is this a constitutional concept (red core)?
-   - A domain skill or scenario (skills)?
+   - A domain contract or scenario (contracts)?
    - A runtime or connector description (infra)?
 
 2. **Choose the namespace**
 
    - Red core: use reserved prefixes and patterns;
-   - Skills: choose a clear domain prefix;
+   - Contracts: choose a clear domain prefix;
    - Infra: follow `connector_*` / `runtime_*` patterns.
 
 3. **Respect global catalogs**

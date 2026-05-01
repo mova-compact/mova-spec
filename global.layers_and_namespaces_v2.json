@@ -1,0 +1,137 @@
+{
+  "version": "2.0.0",
+  "supersedes": "global.layers_and_namespaces_v1.json",
+  "layers": [
+    {
+      "id": "red_core",
+      "color": "red",
+      "title": "MOVA red core",
+      "description": "Constitutional core of MOVA language: vendor-neutral ds/env/global contracts, verbs/actions, and episode semantics. No runtime implementation or domain package layout.",
+      "allowed_kinds": [
+        "ds",
+        "env",
+        "global",
+        "verbs",
+        "actions",
+        "episodes"
+      ],
+      "namespace_prefixes": [
+        "mova",
+        "mova4",
+        "security",
+        "runtime_core",
+        "connector_core"
+      ]
+    },
+    {
+      "id": "contracts",
+      "color": "yellow",
+      "title": "MOVA contracts layer",
+      "description": "Domain/process contracts built on MOVA language primitives. Full contract/package canon is defined in mova-contract-spec.",
+      "allowed_kinds": [
+        "ds",
+        "env",
+        "global",
+        "contract"
+      ],
+      "namespace_prefixes": [
+        "file_cleanup",
+        "task_planning",
+        "smartlink_contract",
+        "social_contract",
+        "ecommerce_contract"
+      ]
+    },
+    {
+      "id": "infra",
+      "color": "yellow",
+      "title": "Infrastructure and vendor bindings",
+      "description": "Runtime and connector bindings to concrete platforms. Infra executes contracts but does not redefine MOVA language semantics.",
+      "allowed_kinds": [
+        "ds",
+        "env",
+        "global"
+      ],
+      "namespace_prefixes": [
+        "connector",
+        "runtime",
+        "vendor"
+      ]
+    },
+    {
+      "id": "applications_ux",
+      "color": "blue",
+      "title": "Applications and UX",
+      "description": "User-facing products, consoles, and developer tools that consume MOVA contracts through envelopes and APIs.",
+      "allowed_kinds": [
+        "ui",
+        "app",
+        "workflow"
+      ],
+      "namespace_prefixes": [
+        "app",
+        "ux",
+        "product"
+      ]
+    }
+  ],
+  "namespace_rules": [
+    {
+      "id": "red_core_ds",
+      "target_kind": "ds",
+      "layer_id": "red_core",
+      "pattern_hint": "ds.(mova|mova4|security|runtime_core|connector_core)_*",
+      "description": "Red core ds.* schemas use reserved domains mova, mova4, security, runtime_core, connector_core.",
+      "examples": [
+        "ds.mova_schema_core_v1",
+        "ds.mova_episode_core_v1",
+        "ds.security_event_episode_core_v1",
+        "ds.instruction_profile_core_v1",
+        "ds.runtime_binding_core_v1",
+        "ds.connector_core_v1"
+      ]
+    },
+    {
+      "id": "contracts_ds",
+      "target_kind": "ds",
+      "layer_id": "contracts",
+      "pattern_hint": "ds.<domain>_* where <domain> is not one of the reserved red_core domains.",
+      "description": "Contracts use domain prefixes and must not reuse red_core prefixes.",
+      "examples": [
+        "ds.file_cleanup_target_v1",
+        "ds.file_cleanup_plan_v1",
+        "ds.task_planning_context_v1"
+      ]
+    },
+    {
+      "id": "infra_connector_ds",
+      "target_kind": "ds",
+      "layer_id": "infra",
+      "pattern_hint": "ds.connector_<vendor>_*",
+      "description": "Vendor-specific connector descriptions live in infra and follow ds.connector_<vendor>_* pattern.",
+      "examples": [
+        "ds.connector_openai_chat_v1",
+        "ds.connector_google_sheets_v1"
+      ]
+    },
+    {
+      "id": "infra_runtime_ds",
+      "target_kind": "ds",
+      "layer_id": "infra",
+      "pattern_hint": "ds.runtime_<vendor_or_env>_*",
+      "description": "Runtime bindings extend the core runtime contract in the infra layer.",
+      "examples": [
+        "ds.runtime_cloudflare_worker_v1",
+        "ds.runtime_local_node_v1"
+      ]
+    }
+  ],
+  "migration": {
+    "from": "skills",
+    "to": "contracts",
+    "reason": "MOVA canonical layer vocabulary uses contracts. External skill ecosystems may map to contracts for compatibility."
+  },
+  "meta": {
+    "note": "MOVA 7.0.0 layered model. v2 supersedes v1 and keeps red_core and infra boundaries while replacing skills terminology with contracts."
+  }
+}

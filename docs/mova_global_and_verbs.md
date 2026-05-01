@@ -1,6 +1,6 @@
 # MOVA — Global Layer and Verbs (`global.*` and verbs)
 
-> Audience: authors of MOVA schemas and skills, and MOVA-based tools and experts that maintain catalogs, dictionaries and verbs.
+> Audience: authors of MOVA schemas and contracts, and MOVA-based tools and experts that maintain catalogs, dictionaries and verbs.
 
 This document describes the **global layer** (`global.*`) and the **verb catalogue** for MOVA.
 
@@ -33,6 +33,8 @@ Its purpose is to provide a stable shared vocabulary for:
 - episodes;
 - tools and executors that operate on MOVA artefacts.
 
+`global.*` may also define role/authority/maturity/allowed-use/forbidden-use vocabulary used by contract and package specifications for AI semantic admission.
+
 Typical `global.*` catalogs include:
 
 - role dictionaries;
@@ -49,6 +51,16 @@ The global layer is:
 - **vendor-neutral** — it does not depend on a specific platform or product;
 - **shared** — the same values are reused across many schemas and envelopes;
 - **stable** — changes are done via versioning and deprecation, not by rewriting meaning.
+
+The global layer must not:
+
+- execute;
+- grant runtime authority;
+- override contracts;
+- override package-local `ds.*` or `env.*`;
+- decide transitions, gates, or terminal outcomes.
+
+Package-level `global` usage belongs to `mova-contract-spec` (contract/package canon), not to this language-spec repository.
 
 Global catalogs are regular JSON documents that can be:
 
@@ -145,13 +157,15 @@ Layers:
   - `global.*` dictionaries;
   - core verbs.
 
-- `skills`  
-  Domain skills and scenarios built on top of the red core:
+- `contracts`  
+  Domain contracts and scenarios built on top of the red core:
   - file cleanup;
   - smartlink and routing;
   - social benefits;
   - e-commerce templates;
   - other domain packages.
+
+Compatibility note: external skill ecosystems may map to MOVA contracts, but `skills` is not canonical MOVA layer vocabulary.
 
 - `infra`  
   Runtime and vendor bindings:
@@ -161,7 +175,7 @@ Layers:
 Namespace rules define:
 
 - which prefixes are reserved for red core schemas (for example `mova`, `mova4`, `security`, `runtime_core`, `connector_core`);
-- how skills must choose their own prefixes (for example `file_cleanup`, `task_planning`, `social`, `ecommerce`, …);
+- how contracts must choose their own prefixes (for example `file_cleanup`, `task_planning`, `social`, `ecommerce`, …);
 - how infra-level schemas should be named (for example `ds.connector_openai_chat_v1`, `ds.runtime_cloudflare_worker_v1`).
 
 The purpose of this catalog is to:
@@ -216,7 +230,7 @@ These catalogs:
 
 - are part of the **global semantic layer**;
 - must remain vendor-neutral at the red core level;
-- may be extended or specialised in **skills** and **infra** layers.
+- may be extended or specialised in **contracts** and **infra** layers.
 
 ---
 
@@ -274,7 +288,7 @@ Red core global catalogs must remain:
 
 Domain-specific or vendor-specific catalogs (for example for particular industries or platforms) must live in:
 
-- `skills` layer (domain-level globals);
+- `contracts` layer (domain-level globals);
 - `infra` layer (vendor-level globals).
 
 ---
@@ -479,7 +493,7 @@ A MOVA-based **expert** or tool that manages `global.*` and verbs can use this d
 - detect duplication of roles, statuses, and categories across schemas;
 - ensure that:
   - red core catalogs stay vendor-neutral;
-  - domain-specific values are placed in skills or infra catalogs;
+  - domain-specific values are placed in contracts or infra catalogs;
   - text channels and security dictionaries are used consistently.
 
 In particular, such tools can check that:

@@ -1,16 +1,15 @@
-# MOVA Spec 6.0.0
+# MOVA Spec 7.0.0
 
 **Machine-Operable Verbal Actions — Core Specification**
 
-MOVA is a language of machine-operable contracts for data and actions. It defines what is valid — not how to execute it.
+MOVA is the language canon for machine-operable contracts. It defines what is valid, not how to execute it.
 
 ```
 Schema  (ds.*)      →  "what the data looks like"
 Envelope (env.*)    →  "what speech-act is being performed"
-Verb                →  "what type of operation"
-Tool                →  "the channel/medium of execution (may be absent)"
-Action              →  "atomic unit: action_signature = (verb_id, tool_id, target_kind?)"
-Global  (global.*)  →  "shared vocabulary across all layers"
+Verb / Action       →  "operation vocabulary and signature"
+Global  (global.*)  →  "shared vocabulary and semantic role/admission layer"
+Episodes            →  "records of meaningful work"
 ```
 
 MOVA itself **never executes anything**. Execution lives outside.  
@@ -69,6 +68,14 @@ Shared vocabularies used across all schemas, envelopes, and episodes to keep ter
 | `global.security_catalog_v1` | Security event and action types |
 | `global.layers_and_namespaces_v1` | Layered model structure |
 | `global.text_channel_catalog_v1` | Text channel definitions |
+
+`global.*` is a semantic reference layer. It can define shared vocabulary and role/admission vocabulary, but it is not an execution control plane.
+
+### Contract (Language-Level Abstract)
+
+A MOVA contract is an abstract language-level concept: it binds data schemas, envelopes, verbs/actions, semantic context, and evidence expectations into an admissible action space.
+
+Full contract/package layout is intentionally out of scope for `mova-spec` and is defined in `mova-contract-spec`.
 
 ### Episodes & Genetic Layer
 
@@ -145,6 +152,14 @@ node bin/mova-validate.mjs \
 
 ---
 
+## Ecosystem Boundary
+
+| Repository | Role |
+|------------|------|
+| `mova-spec` | language canon |
+| `mova-contract-spec` | contract/package canon |
+| `mova-mcp` | registration/admission/runtime control surface |
+
 ## Ecosystem
 
 This repository is part of the MOVA ecosystem:
@@ -167,7 +182,7 @@ Two committed demo runs in `mova_sdk` show the spec in practice: a deterministic
 
 ## Versioning
 
-- Canonical version: **6.0.0**
+- Canonical version: **7.0.0**
 - All schemas: JSON Schema draft 2020-12
 - Breaking changes → new IDs (`*_v2`), never silent mutations
 - MOVA 4.0.0 archived in `docs/archive/4.0.0/`
