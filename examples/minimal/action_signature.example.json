@@ -1,0 +1,22 @@
+{
+  "schema_id": "ds.mova_episode_core_v1",
+  "episode_id": "ep-action-sig-001",
+  "episode_type": "execution/analyze",
+  "mova_version": "7.0.0",
+  "recorded_at": "2026-06-14T12:00:00Z",
+  "verb_id": "analyze",
+  "tool_id": 0,
+  "executor": {
+    "role": "agent",
+    "executor_id": "mova-agent-001",
+    "executor_kind": "ai_model"
+  },
+  "result_status": "completed",
+  "result_summary": "Analyzed the document without calling any named external tool.",
+  "input_envelopes": [
+    {
+      "envelope_type": "env.mova4_core_catalog_publish_v1",
+      "envelope_id": "ep-action-sig-001-input"
+    }
+  ]
+}

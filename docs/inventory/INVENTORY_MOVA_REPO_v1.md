@@ -1,29 +1,59 @@
 # INVENTORY_MOVA_REPO_v1
 
-## Коротко
-Репозиторий фиксирует каноническую спецификацию MOVA 4.1.1: текстовые документы в `docs/`, JSON Schemas в `schemas/` и примеры входных/выходных документов в `examples/`. Исполняемого кода минимум (только валидатор схем), поэтому репозиторий служит как источник контрактов и нормативной документации, а не как платформа.
+## Summary
 
-## Степень готовности: 4/5
-- Артефакты спецификации и схемы синхронизированы (docs + schemas + examples) и валидируются.
-- Есть автоматизируемый тест (`npm test`) для проверки целостности схем, он проходит локально.
-- Не хватает CI/автоматических публикаций и дополнительных примеров/гайдов для расширения.
+This repository is the canonical MOVA language specification.
 
-## Что запускается (и результат)
-- `npm test` — валидирует все JSON Schemas через Ajv 2020-12; PASS (локальный запуск на ветке `chore/inventory-mova-2025-12-29`).
+Current focus:
 
-## Карта документации
-- Спецификация/стандарт: `docs/mova_4.1.1_core.md`, `docs/mova_4.1.1_constitution_en.md`, `docs/mova_4.1.1_global_and_verbs.md`, `docs/mova_4.1.1_layers_and_namespaces.md`, `docs/mova_4.1.1_episodes_and_genetic_layer.md`, `docs/mova_4.1.1_security_layer.md`, `docs/mova_4.1.1_text_and_ui_layer.md`, `docs/mova_4.1.1_runtime_and_connectors.md`, `docs/mova_4.1.1_operator_frame.md`.
-- Как пользоваться: `README.md` (обзор, статус, быстрый вход, запуск тестов).
-- Отчёты/прогресс: `docs/MOVA_4.1.1_RELEASE_NOTES.md` (что изменилось в 4.1.1).
-- Планы/дорожные карты: `docs/SPEC_MOVA_4.1.1_PLAN.md` (чек-лист завершённости 4.1.1).
-- Архив/история: `docs/archive/4.0.0/` (`mova_4.0.0_layers.md`, `mova_4.0.0_episodes_and_pattern_memory.md`, `mova_4.0.0_schema_authoring_guide.md`).
+- version `7.0.0`
+- language validity only
+- developer-readable and agent-readable reference quality
 
-## README: что было плохо / что поправлено
-- Не было явного статуса/назначения репозитория и краткого входа — добавлены отдельные блоки в начале.
-- Инструкции по запуску `npm test` содержали обрывки разметки и сломанные code blocks — исправлено форматирование и разбивка на шаги.
-- Заголовки разделов 3/4 и блоки Governance/License были слеплены с текстом — приведены к нормальной Markdown-структуре.
+The repository contains:
 
-## Следующие 3 шага
-1. Добавить CI (например, GitHub Actions), который запускает `npm test` на pull-requests и публикациях.
-2. Завершить/добавить `docs/mova_4.1.1_schema_authoring_guide.md`, упомянутый в README, с практическими шаблонами.
-3. Расширить `examples/` примерами эпизодов и текстовых каналов, чтобы покрыть новые схемы security и UI layer.
+- normative JSON Schemas in `schemas/`
+- semantic catalogs in `global/`
+- reference guides in `reference/`
+- concept and evolution docs in `docs/`
+- valid examples in `examples/`
+
+It is not a package-canon repo and not a runtime repo.
+
+## Readiness
+
+`5/5` for language-spec repository structure and baseline reference quality.
+
+Current strengths:
+
+- schemas validate
+- examples validate
+- repo boundaries are explicit
+- `action_signature` is documented as the primary operational primitive
+- human and LLM entry paths are both present
+
+## Validation
+
+- `npm test` validates all JSON Schemas and curated examples through Ajv 2020-12
+
+## Documentation Map
+
+- Entry point: `README.md`
+- Reference guides: `reference/`
+- Concept docs: `docs/concepts/`
+- Evolution notes: `docs/evolution/`
+- Historical material: `docs/archive/`
+
+## Current Structure
+
+- `schemas/` — canonical `ds.*` and `env.*` schemas
+- `global/` — canonical `global.*` catalogs
+- `reference/` — fast-path authoring and governance guides
+- `examples/` — minimal, catalog, envelope, and API-oriented examples
+- `bin/` and `tools/` — validation tooling
+
+## Next Useful Steps
+
+1. Add CI that runs `npm test` on pull requests.
+2. Expand cross-links from `mova-spec` into `mova-contract-spec` package examples.
+3. Add one more machine-focused reference guide for schema extension patterns if the authoring surface grows.

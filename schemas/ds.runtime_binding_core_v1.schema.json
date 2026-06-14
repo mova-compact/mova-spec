@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://mova.dev/schemas/ds.runtime_binding_core_v1.schema.json",
   "title": "ds.runtime_binding_core_v1",
-  "description": "Core schema describing a neutral binding between MOVA scenarios/skills and an execution runtime, without vendor-specific details.",
+  "description": "Core schema describing a neutral binding between MOVA contracts and an execution runtime, without vendor-specific details.",
   "allOf": [
     {
       "$ref": "https://mova.dev/schemas/ds.mova_schema_core_v1.schema.json"

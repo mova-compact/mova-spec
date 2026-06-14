@@ -118,6 +118,25 @@
                     "type": "string",
                     "description": "Target kind, e.g. instruction, tool, endpoint, data_scope, conversation, code_exec, network."
                   },
+                  "verb_id": {
+                    "type": "string",
+                    "description": "Optional action-level selector. Use with kind='action' to target a specific verb."
+                  },
+                  "tool_id": {
+                    "oneOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "integer"
+                      }
+                    ],
+                    "description": "Optional action-level selector. Use 0 for tool-less actions."
+                  },
+                  "target_kind": {
+                    "type": "string",
+                    "description": "Optional action-level selector for narrowing a rule to a target class such as personal_data or external_api_request."
+                  },
                   "selector": {
                     "type": "string",
                     "description": "Selector expression used by the runtime (e.g. tag, pattern or other domain-specific reference)."

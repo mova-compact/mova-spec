@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://mova.dev/schemas/ds.mova4_core_catalog_v1.schema.json",
-  "title": "MOVA 4.1.1 Core Catalog (meta-schema)",
-  "description": "Meta-schema for describing MOVA red-core data types, verbs, envelopes and episode types in a single catalog document (no domain-specific schemas).",
+  "title": "MOVA Core Catalog (meta-schema)",
+  "description": "Meta-schema for describing MOVA red-core data types, verbs, envelopes, and episode types in a single catalog document.",
   "type": "object",
   "properties": {
     "version": {

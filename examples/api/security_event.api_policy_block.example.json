@@ -1,0 +1,52 @@
+{
+  "schema_id": "ds.security_event_episode_core_v1",
+  "episode_id": "sec-api-0001",
+  "episode_type": "security_event/policy_violation",
+  "mova_version": "7.0.0",
+  "recorded_at": "2026-06-14T12:10:00Z",
+  "executor": {
+    "role": "gateway",
+    "executor_id": "public-api-gateway",
+    "executor_kind": "service",
+    "environment": {
+      "runtime": "edge",
+      "version": "1.0.0"
+    }
+  },
+  "result_status": "completed",
+  "result_summary": "Outbound customer export to the public API gateway was blocked by policy.",
+  "input_envelopes": [
+    {
+      "envelope_type": "env.security_event_store_v1",
+      "envelope_id": "sec-api-0001-input"
+    }
+  ],
+  "security_event_type": "forbidden_tool_requested",
+  "security_event_category": "policy_violation",
+  "severity": "critical",
+  "policy_profile_id": "api_governance_default_v1",
+  "policy_ref": {
+    "policy_document_id": "api_governance_default_v1",
+    "rule_id": "deny_customer_export_to_public_api",
+    "policy_version": "1.0.0"
+  },
+  "security_model_version": "1.0.0",
+  "detection_source": "runtime_guard",
+  "detection_confidence": 1,
+  "recommended_actions": [
+    {
+      "action_type": "block",
+      "reason": "Customer export through public API is forbidden.",
+        "priority": "high"
+    }
+  ],
+  "actions_taken": [
+    {
+      "action_type": "block",
+      "taken_at": "2026-06-14T12:10:01Z",
+      "actor": "public-api-gateway",
+      "status": "completed",
+      "details": "Request blocked before outbound call."
+    }
+  ]
+}

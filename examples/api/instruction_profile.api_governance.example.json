@@ -1,0 +1,63 @@
+{
+  "schema_id": "ds.instruction_profile_core_v1",
+  "profile_id": "api_governance_default_v1",
+  "profile_version": "1.0.0",
+  "label": "Default API governance profile",
+  "security_model_version": "1.0.0",
+  "status": "active",
+  "applies_to": {
+    "executor_kinds": [
+      "service",
+      "hybrid"
+    ],
+    "roles": [
+      "gateway",
+      "agent"
+    ],
+    "envelope_ids": [
+      "env.security_event_store_v1"
+    ],
+    "data_types": [
+      "ds.connector_core_v1"
+    ],
+    "tags": [
+      "api",
+      "governance"
+    ]
+  },
+  "rules": [
+    {
+      "rule_id": "log_public_gateway_calls",
+      "description": "Log all actions that cross the public API gateway.",
+      "effect": "log_only",
+      "target": {
+        "kind": "action",
+        "tool_id": 31001
+      },
+      "severity": "medium",
+      "on_violation": [
+        "log"
+      ]
+    },
+    {
+      "rule_id": "deny_customer_export_to_public_api",
+      "description": "Deny export of customer data through the public API gateway.",
+      "effect": "deny",
+      "target": {
+        "kind": "action",
+        "verb_id": "export",
+        "tool_id": 31001,
+        "target_kind": "customer_data"
+      },
+      "severity": "critical",
+      "on_violation": [
+        "block",
+        "alert"
+      ]
+    }
+  ],
+  "meta": {
+    "title": "API governance profile example",
+    "lang": "en"
+  }
+}

@@ -172,8 +172,7 @@
         "security_event_category",
         "severity",
         "security_model_version"
-      ],
-      "additionalProperties": false
+      ]
     }
   ]
 }

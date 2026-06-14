@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-// MOVA 5.0.0 core schema validator (JSON Schema draft 2020-12)
+// MOVA 7.0.0 schema and example validator (JSON Schema draft 2020-12)
 
 const fs = require("fs");
 const path = require("path");
@@ -69,7 +69,7 @@ for (const [file, schema] of schemas) {
   }
 }
 
-console.log("Validating...");
+console.log("Validating schemas...");
 
 let hasErrors = false;
 
@@ -99,6 +99,81 @@ for (const [file, schema] of schemas) {
 if (hasErrors) {
   console.log("\nSome schemas failed validation.");
   process.exit(1);
-} else {
-  console.log("\nAll schemas validated successfully.");
 }
+
+console.log("\nValidating examples...");
+
+const exampleTargets = [
+  [
+    "examples/catalogs/mova4_core_catalog.example.json",
+    "https://mova.dev/schemas/ds.mova4_core_catalog_v1.schema.json"
+  ],
+  [
+    "examples/envelopes/env.instruction_profile_publish_v1.example.json",
+    "https://mova.dev/schemas/env.instruction_profile_publish_v1.schema.json"
+  ],
+  [
+    "examples/envelopes/env.mova4_core_catalog_publish_v1.example.json",
+    "https://mova.dev/schemas/env.mova4_core_catalog_publish_v1.schema.json"
+  ],
+  [
+    "examples/envelopes/env.security_event_store_v1.example.json",
+    "https://mova.dev/schemas/env.security_event_store_v1.schema.json"
+  ],
+  [
+    "examples/minimal/action_signature.example.json",
+    "https://mova.dev/schemas/ds.mova_episode_core_v1.schema.json"
+  ],
+  [
+    "examples/minimal/action_signature.with_tool.example.json",
+    "https://mova.dev/schemas/ds.mova_episode_core_v1.schema.json"
+  ],
+  [
+    "examples/api/instruction_profile.api_governance.example.json",
+    "https://mova.dev/schemas/ds.instruction_profile_core_v1.schema.json"
+  ],
+  [
+    "examples/api/security_event.api_policy_block.example.json",
+    "https://mova.dev/schemas/ds.security_event_episode_core_v1.schema.json"
+  ]
+];
+
+for (const [relativePath, schemaId] of exampleTargets) {
+  const validator = ajv.getSchema(schemaId);
+  const fullPath = path.join(__dirname, "..", relativePath);
+
+  if (!validator) {
+    hasErrors = true;
+    console.log(`FAIL  ${relativePath}`);
+    console.log(`  schema not loaded: ${schemaId}`);
+    continue;
+  }
+
+  try {
+    const data = JSON.parse(fs.readFileSync(fullPath, "utf8"));
+    const valid = validator(data);
+    if (valid) {
+      console.log(`OK    ${relativePath}`);
+    } else {
+      hasErrors = true;
+      console.log(`FAIL  ${relativePath}`);
+      if (validator.errors && validator.errors.length) {
+        for (const err of validator.errors) {
+          const loc = err.instancePath || err.schemaPath || "";
+          console.log(`  ${loc}: ${err.message}`);
+        }
+      }
+    }
+  } catch (err) {
+    hasErrors = true;
+    console.log(`FAIL  ${relativePath}`);
+    console.log(`  ${err.message}`);
+  }
+}
+
+if (hasErrors) {
+  console.log("\nValidation failed.");
+  process.exit(1);
+}
+
+console.log("\nAll schemas and examples validated successfully.");

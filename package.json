@@ -1,8 +1,8 @@
 {
   "name": "@leryk1981/mova-spec",
-  "version": "6.0.0",
+  "version": "7.0.0",
   "private": true,
-  "description": "MOVA (Machine-Operable Verbal Actions) 6.0.0 core specifications, schemas and examples.",
+  "description": "Canonical MOVA language specification: schemas, envelopes, semantic catalogs, action semantics, and examples.",
   "license": "Apache-2.0",
   "author": "Sergii Miasoiedov",
   "type": "commonjs",
@@ -12,10 +12,12 @@
   "files": [
     "schemas/**",
     "examples/**",
+    "global/**",
+    "reference/**",
     "docs/**",
     "bin/**",
     "README.md",
-    "README.uk.md",
+    "CONTRIBUTING.md",
     "LICENSE"
   ],
   "directories": {

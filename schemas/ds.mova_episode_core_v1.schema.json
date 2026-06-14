@@ -16,11 +16,11 @@
         },
         "episode_type": {
           "type": "string",
-          "description": "Logical type of the episode, e.g. file_cleanup_plan_review, smartlink_routing_decision."
+          "description": "Logical type of the episode. Recommended pattern: <core_id>[/<subtype>], e.g. execution/file_cleanup or security_event/prompt_injection_suspected."
         },
         "mova_version": {
           "type": "string",
-          "description": "MOVA language version used when recording this episode, e.g. 4.1.1."
+          "description": "MOVA language version used when recording this episode, e.g. 7.0.0."
         },
         "recorded_at": {
           "type": "string",
@@ -179,7 +179,6 @@
         "result_status",
         "result_summary"
       ],
-      "additionalProperties": false,
       "anyOf": [
         {
           "required": [

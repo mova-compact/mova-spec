@@ -1,5 +1,5 @@
 {
-  "version": "6.0.0-core",
+  "version": "7.0.0-core",
   "data_types": [
     {
       "id": "ds.mova_schema_core_v1",
@@ -34,7 +34,7 @@
     {
       "id": "ds.runtime_binding_core_v1",
       "title": "Core runtime binding",
-      "description": "Neutral description of how MOVA scenarios/skills are bound to execution runtimes.",
+      "description": "Neutral description of how MOVA contracts are bound to execution runtimes.",
       "schema_ref": "https://mova.dev/schemas/ds.runtime_binding_core_v1.schema.json"
     },
     {
